@@ -49,9 +49,12 @@ kubectl apply -f statefulset.yaml
 ```
 
 5. Copy the index.html file into the container
+
 ```bash
-kubectl cp index.html relay-0:/usr/share/nginx/html/index.html
+kubectl cp index.html relay-0:/usr/share/nginx/html/index.html -n imperial-net
 ```
+
+** It's possible that you need to do this more than one **
 
 6. Then inspect the pods and index.html file:
 
