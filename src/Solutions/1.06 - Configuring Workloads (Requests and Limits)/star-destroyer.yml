@@ -1,0 +1,29 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: star-destroyer
+  labels:
+    app: star-destroyer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: star-destroyer
+  template:
+    metadata:
+      labels:
+        app: star-destroyer
+    spec:
+      containers:
+      - name: main-cannon
+        image: nginx
+        resources:
+          requests:
+            cpu: "500m"
+            memory: "512Mi"
+          limits:
+            cpu: "1"
+            memory: "1Gi"
+        ports:
+        - containerPort: 80

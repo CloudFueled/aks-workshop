@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: relay
+  namespace: imperial-net
+spec:
+  selector:
+    matchLabels:
+      app: relay
+  serviceName: relay
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: relay
+    spec:
+      containers:
+      - name: nginx
+        image: nginx
+        ports:
+        - containerPort: 80
+          name: http
+        volumeMounts:
+        - name: log-storage
+          mountPath: /var/log/nginx
+  volumeClaimTemplates:
+  - metadata:
+      name: log-storage
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 1Gi

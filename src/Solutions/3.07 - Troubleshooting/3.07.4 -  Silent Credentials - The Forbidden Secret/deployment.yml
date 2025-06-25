@@ -1,0 +1,42 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: secure-app
+  namespace: secure-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: secure-app
+  template:
+    metadata:
+      labels:
+        app: secure-app
+    spec:
+      serviceAccountName: app-service-account
+      containers:
+      - name: app
+        image: busybox:1.35
+        command: ['sh', '-c']
+        args:
+        - |
+          echo "Trying to access secret..."
+          cat /var/secrets/username
+          cat /var/secrets/password
+          echo "Secret access successful!"
+          sleep 3600
+        volumeMounts:
+        - name: secret-volume
+          mountPath: /var/secrets
+          readOnly: true
+        env:
+        - name: API_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: application-secrets
+              key: api-token
+      volumes:
+      - name: secret-volume
+        secret:
+          secretName: app-credentials
