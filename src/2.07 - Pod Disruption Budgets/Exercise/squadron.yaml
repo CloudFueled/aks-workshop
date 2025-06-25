@@ -83,7 +83,7 @@ spec:
             - containerPort: 80
           volumeMounts:
             - name: preflight-status
-              mountPath: /usr/share/nginx/html
+              mountPath: /usr/share/nginx/telemtry
           startupProbe:
             httpGet:
               path: /
