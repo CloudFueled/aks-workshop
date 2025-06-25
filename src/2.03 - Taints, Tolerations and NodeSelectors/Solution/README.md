@@ -43,7 +43,7 @@ Secure the new **Star Destroyer node** by:
 az aks nodepool add \
   --resource-group $RESOURCE_GROUP \
   --cluster-name $CLUSTER_NAME \
-  --name userpool-stardestroyer \
+  --name destroyer \
   --node-count 1 \
   --node-vm-size $NODE_SIZE \
   --node-osdisk-type Ephemeral \

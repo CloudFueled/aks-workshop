@@ -79,7 +79,6 @@ kubectl exec -n imperial-net relay-0 -- tail /var/log/nginx/access.log
    - New pods continue the naming sequence
    - PVCs are automatically created and bound
    - Log files remain intact after pod restarts
-   - What happens around 7-8 replica's?
 
 ---
 
