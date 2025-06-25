@@ -35,12 +35,6 @@ In this exercise, you’ll simulate the secure deletion protocol by attaching a 
 5. Remove the finalizer manually by editing the resource in a new terminal
 
 ```bash
-kubectl get pvc azure-datalog-claim -o json | jq '.metadata.finalizers = []' | kubectl replace --raw "/api/v1/namespaces/default/persistentvolumeclaims/azure-datalog-claim/finalize" -f -
-```
-
-> If you don't have `jq` installed, you can also patch the resource manually:
-
-```bash
 kubectl patch pvc azure-datalog-claim -p '{"metadata":{"finalizers":[]}}' --type=merge
 ```
 
