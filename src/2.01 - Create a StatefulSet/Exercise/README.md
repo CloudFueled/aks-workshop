@@ -27,7 +27,7 @@ You will:
 
 ### ⚙️ Phase I: create the Headless Service
 
-3. Create a **headless Service** in the `imperial-net` namespace.
+3. Create a **headless Service** named `relay` in the `imperial-net` namespace.
 
 > 📡 This will give each pod a **DNS entry** like:
 > `relay-0.relay.imperial-net.svc.cluster.local`
@@ -37,7 +37,13 @@ You will:
 ### ⚙️ Phase II: define the StatefulSet
 
 Mind the following requirements in the specification:
-* Set the CPU resource request to 500m
+
+- Use the `nginx` image
+- Set the `replicas` to 3
+- Set the `serviceName` to `relay`
+- Set the CPU resource request to 500m
+- `/usr/share/nginx/html` should be the mount point for the persistent volume
+- 1Gi of storage should be requested
 
 ### ⚙️ Phase III: apply and observe
 
@@ -65,16 +71,19 @@ kubectl exec -n imperial-net relay-0 -- cat /usr/share/nginx/html/index.html
 ```
 
 7. Delete the pod:
+
 ```bash
 kubectl delete pod relay-0 -n imperial-net
 ```
 
 8. When it comes back, check again:
+
 ```bash
 kubectl exec -n imperial-net relay-0 -- cat /usr/share/nginx/html/index.html
 ```
 
 9. Check the contents of the site:
+
 ```bash
 kubectl port-forward -n imperial-net pod/relay-0 8080:80
 ```
