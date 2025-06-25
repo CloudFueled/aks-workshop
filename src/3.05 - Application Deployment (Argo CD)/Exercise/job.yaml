@@ -1,0 +1,13 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: rebel-frequency-scan
+spec:
+  template:
+    spec:
+      containers:
+        - name: scanner
+          image: busybox
+          command: ["sh", "-c", "echo '📡 Scanning for rebel frequencies...'; sleep 10; echo '✅ Scan complete.'"]
+      restartPolicy: Never

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Star Wars - A new pod awakens</title>
+  <style>
+    body {
+      margin: 0;
+      background: black;
+      overflow: hidden;
+      color: #feda4a;
+      font-family: 'Arial Black', sans-serif;
+    }
+
+    .star-wars {
+      position: relative;
+      height: 100vh;
+      perspective: 300px;
+      overflow: hidden;
+    }
+
+    .crawl {
+      position: absolute;
+      top: 100%;
+      width: 90%;
+      margin: 0 auto;
+      transform-origin: 50% 100%;
+      transform: rotateX(25deg);
+      animation: crawl 60s linear forwards;
+      text-align: justify;
+      font-size: 1.4rem;
+      line-height: 1.6;
+    }
+
+    .crawl h1 {
+      text-align: center;
+      font-size: 2.5em;
+      margin: 0 0 30px;
+    }
+
+    @keyframes crawl {
+      0% {
+        top: 100%;
+      }
+      100% {
+        top: -200%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="star-wars">
+    <div class="crawl">
+      <h1>Episode 0<br>The Web Awakens</h1>
+      <p>
+        It is a time of creativity. Brave developers across the galaxy forge
+        powerful applications using the mysterious power of code.
+      </p>
+      <p>
+        Among them, a lone coder seeks to master HTML, CSS, and JavaScript.
+        Through determination and a bit of Google, they will rise as a Front-End Jedi.
+      </p>
+      <p>
+        The path is not easy — bugs, linter errors, and typos await.
+        But hope shines bright, and with every commit, the Force grows stronger.
+      </p>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: tie-squadron
+  namespace: argocd
+spec:
+  description: Project for TIE squadron deployments only
+  sourceRepos:
+    - 'https://cloudfuelbe@dev.azure.com/cloudfuelbe/Research%20and%20development/_git/xerius-labs-gitops'
+  destinations:
+    - namespace: tie-squadron
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: ""
+      kind: Namespace
+    - group: "rbac.authorization.k8s.io"
+      kind: RoleBinding
+  namespaceResourceWhitelist:
+    - group: ""
+      kind: ConfigMap
+    - group: ""
+      kind: Secret
+    - group: "apps"
+      kind: Deployment
+    - group: ""
+      kind: Service
+  syncWindows:
+    - kind: allow
+      schedule: "Mon-Fri 17:00-09:00"
+      duration: 8h
+      applications:
+        - "*"

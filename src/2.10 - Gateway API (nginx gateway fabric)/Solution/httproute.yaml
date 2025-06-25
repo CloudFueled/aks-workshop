@@ -1,0 +1,20 @@
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: tie-squadron-route
+  namespace: default
+spec:
+  parentRefs:
+  - name: hyperspace-gateway
+    namespace: nginx-gateway
+  hostnames:
+  - tie-fighter.outerrim.com
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /
+    backendRefs:
+    - name: squadron
+      port: 80
