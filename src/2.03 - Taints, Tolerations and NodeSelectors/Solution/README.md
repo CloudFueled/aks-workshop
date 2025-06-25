@@ -21,8 +21,8 @@ To defend the newly-commissioned Star Destroyer node from unauthorized access—
 
 Secure the new **Star Destroyer node** by:
 
-- Labeling it with Imperial allegiance
-- Applying a **taint** to prevent unauthorized access
+- Labeling it with Imperial allegiance (alliance=Empire)
+- Applying a **taint** to prevent unauthorized access (access=restricted:NoSchedule)
 - Updating the **TIE squadron Deployment** with:
 
   - Toleration for the node’s taint
@@ -40,38 +40,30 @@ Secure the new **Star Destroyer node** by:
 1. **Add an extra nodepool**
 
 ```bash
+export RESOURCE_GROUP="rg-imperial-outpost"
+export CLUSTER_NAME="aks-imperial-core"
+export NODE_SIZE="Standard_E4ads_v6"
+```
+
+```bash
 az aks nodepool add \
   --resource-group $RESOURCE_GROUP \
   --cluster-name $CLUSTER_NAME \
   --name destroyer \
-  --node-count 1 \
+  --node-count 3 \
   --node-vm-size $NODE_SIZE \
   --node-osdisk-type Ephemeral \
   --node-osdisk-size 64 \
-  --mode User
-```
-
-2. **Label the node**
-
-Identify a node to represent the Star Destroyer:
-
-```bash
-kubectl label node <stardestroyer-node-name> alliance=Empire
-```
-
-3. **Taint the node**
-
-Prevent unauthorized pods from being scheduled:
-
-```bash
-kubectl taint node <stardestroyer-node-name> access=restricted:NoSchedule
+  --mode User \
+  --labels "alliance=Empire" \
+  --node-taints "access=restricted:NoSchedule"
 ```
 
 ---
 
 ### ⚙️ Phase II: configure authorized TIE Fighter Deployment
 
-4. **Modify your `squadron.yaml`**
+2. **Modify your `squadron.yaml`**
 
 Ensure the Deployment has:
 
@@ -83,13 +75,13 @@ Ensure the Deployment has:
 
 ### ⚙️ Phase III: launch the Squadron
 
-5. **Apply your deployment**
+3. **Apply your deployment**
 
 ```bash
 kubectl apply -f squadron.yaml
 ```
 
-6. **Verify pod placement**
+4. **Verify pod placement**
 
 ```bash
 kubectl get pods -o wide
@@ -105,21 +97,11 @@ kubectl get pods -o wide
 
 ### ⚙️ Phase IV: test Rebel infiltration
 
-7. **Attempt to deploy a Rebel craft**
+5. **Attempt to deploy a Rebel craft**
 
 Create a pod with no toleration or node selector.
 
 ⛔ This pod should remain **unscheduled** due to the taint on the Star Destroyer.
-
----
-
-### ⚙️ Phase V: Optional – Remove the Taint
-
-```bash
-kubectl taint node <stardestroyer-node-name> access=restricted:NoSchedule-
-```
-
-Use this to allow general scheduling again (e.g., for rollback or cluster load balancing).
 
 ---
 
