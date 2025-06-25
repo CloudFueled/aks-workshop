@@ -19,7 +19,7 @@ Specifically, you must:
 1. Create a **PodDisruptionBudget** named `squadron-pdb` for the `squadron` deployment.
 2. Ensure that **at least 2 out of 3 pods** remain available at any given time.
 3. Apply the PDB manifest declaratively.
-4. Simulate a voluntary disruption using `kubectl drain` or `kubectl delete pod` and **observe enforcement** of the policy.
+4. Simulate a voluntary disruption using `kubectl drain` and **observe enforcement** of the policy.
 
 ---
 

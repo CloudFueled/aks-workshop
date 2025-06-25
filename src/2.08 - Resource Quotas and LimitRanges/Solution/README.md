@@ -47,6 +47,7 @@ Create a manifest named `limit-range.yaml`
 ### ⚙️ Phase IV: Deploy a Test Pod
 
 Create a pod manifest `test-pod.yaml` **without resource requests or limits**
+Name it `delta-tie` and place it in the `delta-squadron` namespace.
 
 Then check the default values applied:
 
