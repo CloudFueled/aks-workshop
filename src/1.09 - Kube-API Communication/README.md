@@ -26,10 +26,8 @@ From inside a pod:
 A secret has already been created in your cluster:
 
 ```bash
-kubectl create namespace imperial-datavault
 kubectl create secret generic encryption-codes \
-  --from-literal=deathstar_plans=encrypted-hex \
-  -n imperial-datavault
+  --from-literal=deathstar_plans=encrypted-hex
 ```
 
 ---
@@ -83,9 +81,43 @@ Run the following command inside the pod:
 ```bash
 curl -sSk \
   -H "Authorization: Bearer $TOKEN" \
-  https://$KUBERNETES_SERVICE_HOST/api/v1/namespaces/imperial-datavault/secrets/encryption-codes \
-  | jq
+  https://$KUBERNETES_SERVICE_HOST/api/v1/namespaces/default/secrets/encryption-codes
 ```
+
+Do you see the secret? Probably not! The default service account does not have permission to access secrets in the `default` namespace.
+
+Let's fix the permissions of the default service account to allow secret access in the default namespace:
+Run the following command outside the pod:
+
+```bash
+kubectl apply -f - <<EOF
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: namespace-reader
+rules:
+- apiGroups: [""]
+  resources: ["secrets"]
+  verbs: ["get", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: default-namespace-reader
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: default
+roleRef:
+  kind: ClusterRole
+  name: namespace-reader
+  apiGroup: rbac.authorization.k8s.io
+EOF
+```
+
+This will grant the default service account in the `default` namespace permission to read secrets.
+
+Try the API call again.
 
 > 🔎 You should see a base64-encoded secret object.
 
