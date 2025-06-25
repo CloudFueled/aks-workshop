@@ -26,11 +26,11 @@ spec:
             - containerPort: 80
               name: http
           volumeMounts:
-            - name: log-storage
-              mountPath: /var/log/nginx
+            - name: html-storage
+              mountPath: /usr/share/nginx/html
   volumeClaimTemplates:
     - metadata:
-        name: log-storage
+        name: html-storage
       spec:
         accessModes: ["ReadWriteOnce"]
         resources:

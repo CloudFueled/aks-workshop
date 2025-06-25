@@ -27,7 +27,7 @@ You will:
 
 ### ⚙️ Phase I: create the Headless Service
 
-Create a **headless Service** in the `imperial-net` namespace.
+3. Create a **headless Service** in the `imperial-net` namespace.
 
 > 📡 This will give each pod a **DNS entry** like:
 > `relay-0.relay.imperial-net.svc.cluster.local`
@@ -36,25 +36,44 @@ Create a **headless Service** in the `imperial-net` namespace.
 
 ### ⚙️ Phase II: define the StatefulSet
 
-> 📁 Each pod writes Nginx logs to `/var/log/nginx`, backed by a unique **PersistentVolumeClaim**.
-
----
+Mind the following requirements in the specification:
+* Set the CPU resource request to 500m
 
 ### ⚙️ Phase III: apply and observe
 
-Apply everything:
+4. Apply everything:
 
 ```bash
-kubectl apply -f headless-service.yaml
+kubectl apply -f service.yaml
 kubectl apply -f statefulset.yaml
 ```
 
-Then inspect the pods and logs:
+5. Copy the index.html file into the container
+```bash
+kubectl cp index.html relay-0:/usr/share/nginx/html/index.html
+```
+
+6. Then inspect the pods and index.html file:
 
 ```bash
 kubectl get pods -n imperial-net -o wide
 
-kubectl exec -n imperial-net relay-0 -- tail /var/log/nginx/access.log
+kubectl exec -n imperial-net relay-0 -- cat /usr/share/nginx/html/index.html
+```
+
+7. Delete the pod:
+```bash
+kubectl delete pod relay-0 -n imperial-net
+```
+
+8. When it comes back, check again:
+```bash
+kubectl exec -n imperial-net relay-0 -- cat /usr/share/nginx/html/index.html
+```
+
+9. Check the contents of the site:
+```bash
+kubectl port-forward -n imperial-net pod/relay-0 8080:80
 ```
 
 ### ✅ Expected Outcomes
@@ -71,7 +90,7 @@ kubectl exec -n imperial-net relay-0 -- tail /var/log/nginx/access.log
 1. Scale the StatefulSet to 5 replicas:
 
    ```bash
-   kubectl scale statefulset relay --replicas=5 -n imperial-net
+   kubectl scale statefulset relay --replicas=30 -n imperial-net
    ```
 
 2. Validate:
@@ -85,16 +104,3 @@ kubectl exec -n imperial-net relay-0 -- tail /var/log/nginx/access.log
 ## ❓ Empire Debrief – Storage Strategy
 
 > **Where is this data stored in Azure? What resource is used for persistent storage?**
-
-**Answer:**
-
-- In Azure Kubernetes Service (AKS), when no `storageClassName` is explicitly defined, the **default StorageClass** is used.
-- For most AKS clusters, this StorageClass provisions storage through **Azure Disks**.
-- Each `PersistentVolumeClaim` results in a **separate managed disk** (Azure resource type: `Microsoft.Compute/disks`) being created.
-- You can find these disks in the same resource group as your node pool or AKS cluster, often named like `kubernetes-dynamic-pvc-xxxxx`.!
-
-## 📚 Resources
-
-- [Volumes](https://kubernetes.io/docs/concepts/storage/volumes/)
-- [Persistent Volumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)
-- [StatefulSets](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/)
