@@ -52,7 +52,7 @@ module aks 'modules/aks.bicep' = {
 
 // MARK: Key Vault Resources
 // MARK: Resource Group
-resource resourceGroup 'Microsoft.Resources/resourceGroups@2025-03-01' = {
+resource resourceGroup 'Microsoft.Resources/resourceGroups@2025-04-01' = {
   name: keyVaultResourceGroupName
   location: location
   tags: {
