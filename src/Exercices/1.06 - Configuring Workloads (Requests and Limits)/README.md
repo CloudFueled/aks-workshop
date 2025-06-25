@@ -6,16 +6,16 @@ Before any Imperial vessel is cleared for deployment, it must submit a logistics
 
 In this exercise, you’ll configure **resource requests and limits** for various Imperial vessels within a **Deployment**. These limits are enforced by the Empire to ensure no ship starves others of critical resources—or consumes beyond its rank.
 
-> *“The Empire does not tolerate waste. Every resource is accounted for.”* – Grand Admiral Thrawn
+> _“The Empire does not tolerate waste. Every resource is accounted for.”_ – Grand Admiral Thrawn
 
 ---
 
 ## 🎯 Mission objectives
 
-* Define **CPU and memory requests and limits** in your squadron's deployment spec.
-* Ensure **TIE Fighters** operate with lightweight resource allocations.
-* Create a `star-destroyer` deployment with the necessary specs to reflect its capital-class capacity.
-* Observe the behavior of the scheduler when a vessel violates provisioning policy.
+- Define **CPU and memory requests and limits** in your squadron's deployment spec.
+- Ensure **TIE Fighters** operate with lightweight resource allocations.
+- Create a `star-destroyer` deployment with the necessary specs to reflect its capital-class capacity.
+- Observe the behavior of the scheduler when a vessel violates provisioning policy.
 
 ---
 
@@ -39,16 +39,16 @@ This ensures the TIE Fighters declare minimal resource usage and cannot exceed t
 
 ### 🛠️ Step 02: apply and inspect
 
-* Apply the updated Deployment.
-* Check the Deployment and Pods.
-* Review the `Limits` and `Requests` sections to verify proper settings.
+- Apply the updated Deployment.
+- Check the Deployment and Pods.
+- Review the `Limits` and `Requests` sections to verify proper settings.
 
 ---
 
 ### 🛠️ Step 03: add a Star Destroyer Deployment
 
-* Create a new deployment file called `star-destroyer.yaml` and define a heavier vessel.
-* Apply the manifest and confirm the pod is scheduled with its enhanced allocation.
+- Create a new deployment file called `star-destroyer.yaml` and define a heavier vessel.
+- Apply the manifest and confirm the pod is scheduled with its enhanced allocation.
 
 ---
 
@@ -62,4 +62,5 @@ The pod should either be **evicted**, **throttled**, or **remain pending**, depe
 ---
 
 ## 📚 Resources
+
 - [Resource Management for Pods and Containers](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/)
