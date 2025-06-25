@@ -92,3 +92,9 @@ kubectl exec -n imperial-net relay-0 -- tail /var/log/nginx/access.log
 - For most AKS clusters, this StorageClass provisions storage through **Azure Disks**.
 - Each `PersistentVolumeClaim` results in a **separate managed disk** (Azure resource type: `Microsoft.Compute/disks`) being created.
 - You can find these disks in the same resource group as your node pool or AKS cluster, often named like `kubernetes-dynamic-pvc-xxxxx`.!
+
+## 📚 Resources
+
+- [Volumes](https://kubernetes.io/docs/concepts/storage/volumes/)
+- [Persistent Volumes](https://kubernetes.io/docs/concepts/storage/persistent-volumes/)
+- [StatefulSets](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/)

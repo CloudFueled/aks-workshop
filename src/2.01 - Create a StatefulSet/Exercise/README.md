@@ -86,10 +86,3 @@ kubectl exec -n imperial-net relay-0 -- tail /var/log/nginx/access.log
 ## ❓ Empire Debrief – Storage Strategy
 
 > **Where is this data stored in Azure? What resource is used for persistent storage?**
-
-**Answer:**
-
-- In Azure Kubernetes Service (AKS), when no `storageClassName` is explicitly defined, the **default StorageClass** is used.
-- For most AKS clusters, this StorageClass provisions storage through **Azure Disks**.
-- Each `PersistentVolumeClaim` results in a **separate managed disk** (Azure resource type: `Microsoft.Compute/disks`) being created.
-- You can find these disks in the same resource group as your node pool or AKS cluster, often named like `kubernetes-dynamic-pvc-xxxxx`.!
