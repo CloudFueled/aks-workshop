@@ -26,7 +26,7 @@ You will:
 
 1.  Deploy the NGINX Gateway Fabric Controller
 
-The manifests are found at: https://raw.githubusercontent.com/nginx/nginx-gateway-fabric/v2.0.0/deploy/crds.yaml
+The manifests are found at: https://raw.githubusercontent.com/nginx/nginx-gateway-fabric/v2.0.1/deploy/crds.yaml
 
 2.  Create the Gateway Resource
 
@@ -42,3 +42,4 @@ Create a Gateway that listens on HTTP (port 80)
 
 - [Install NGINX Gateway Fabric with Manifests](https://docs.nginx.com/nginx-gateway-fabric/install/manifests/)
 - [Get started](https://docs.nginx.com/nginx-gateway-fabric/get-started/#create-gateway-and-httproute-resources)
+- [Simple Gateway](https://gateway-api.sigs.k8s.io/guides/http-routing/)
