@@ -20,7 +20,7 @@ As the systems engineer for Fleet Sector 9, your task is to install the **Gatewa
 
 ## 🧭 Step-by-step: installing an CRD
 
-1. Install the Gateway API CRDs into your cluster
+1. Install the Gateway API CRDs into your cluster (check the resources section for the latest version):
 
 2. Wait a few seconds, then list the installed CRDs
 
@@ -33,7 +33,7 @@ You should see CRDs such as:
 3. Inspect one of the installed CRDs to see its structure:
 
 ```bash
-kubectl explain gateway.gateway.networking.k8s.io
+kubectl explain gateways.gateway.networking.k8s.io
 ```
 
 ---
