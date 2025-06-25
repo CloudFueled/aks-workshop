@@ -1,19 +1,18 @@
-# 🛰️ Lab 2.03 – Reinforced Deployment protocol
+# 🛰️ Lab 2.03 – Reinforced deployment protocol
 
-## **Taints, Tolerations, Node Selectors & Anti-Affinity**
+## **Taints, Tolerations & Anti-Affinity**
 
-### 🛡️ _Imperial Defense Grid: Post-Endor Isolation Protocol_
+### 🛡️ *Imperial Defense Grid: Post-Endor isolation protocol*
 
 Following the catastrophic oversight on the original Star Destroyer, the Empire is rolling out **enhanced pod scheduling policies** to lock down its most critical nodes.
 
 To defend the newly-commissioned Star Destroyer node from unauthorized access—and prevent TIE Fighters from clustering and risking simultaneous failure—you’ll use:
 
-- 🛑 **Taints** to repel unauthorized pods
-- 🎯 **Node selectors** for Imperial allegiance
-- 🛡️ **Tolerations** for privileged scheduling
-- 🧩 **Anti-affinity rules** to distribute TIE fighters safely across Star Destroyer sectors
+* 🛑 **Taints** to repel unauthorized pods
+* 🛡️ **Tolerations** for privileged scheduling
+* 🧩 **Anti-affinity rules** to distribute TIE Fighters safely across Star Destroyer sectors
 
-> _"We will not suffer another flaw in our station’s design. Isolation and alignment ensure control."_ – Director Krennic
+> *"We will not suffer another flaw in our station’s design. Isolation and alignment ensure control."* – Director Krennic
 
 ---
 
@@ -21,26 +20,22 @@ To defend the newly-commissioned Star Destroyer node from unauthorized access—
 
 Secure the new **Star Destroyer node** by:
 
-- Labeling it with Imperial allegiance (alliance=Empire)
-- Applying a **taint** to prevent unauthorized access (access=restricted:NoSchedule)
-- Updating the **TIE squadron Deployment** with:
-
-  - Toleration for the node’s taint
-  - Node selector for allegiance
-  - Pod anti-affinity to prevent TIE Fighters from clustering
-
-- Testing that a **Rebel craft** (e.g., X-wing) is denied access
+* Labeling it with Imperial allegiance: `alliance=Empire`
+* Applying a **taint** to restrict access: `access=restricted:NoSchedule`
+* Updating the **TIE Squadron Deployment** to:
+  * Tolerate the Star Destroyer node’s taint
+  * Use **pod anti-affinity** to prevent clustering on the same node
+* Testing that a **Rebel craft** (e.g., X-wing) is denied access
 
 ---
 
 ## 🧭 Step-by-step: securing the station
 
-### ⚙️ Phase I: fortify the Star Destroyer Node
+### ⚙️ Phase I: Fortify the Star Destroyer Node
 
-1. **Add an extra nodepool**
+1. **Add an extra node pool**
 
-Find out how to add labels and taints to the nodepool
-Tip: check the resources section below.
+Deploy a hardened node pool to serve as the Star Destroyer fleet platform:
 
 ```bash
 export RESOURCE_GROUP="rg-imperial-outpost"
@@ -57,58 +52,95 @@ az aks nodepool add \
   --node-vm-size $NODE_SIZE \
   --node-osdisk-type Ephemeral \
   --node-osdisk-size 64 \
-  --mode User
+  --mode User \
+  --labels "alliance=Empire" \
+  --node-taints "access=restricted:NoSchedule"
 ```
 
 ---
 
-### ⚙️ Phase II: configure authorized TIE Fighter Deployment
+### ⚙️ Phase II: Configure Authorized TIE Fighter Deployment
 
 2. **Modify your `squadron.yaml`**
 
-Ensure the Deployment has:
+Update the TIE squadron Deployment to:
 
-- A **node selector** to land only on Empire-aligned nodes
-- A **toleration** for the restricted Star Destroyer access
-- A **pod anti-affinity rule** to spread fighters across nodes
+* Add a **toleration** for `access=restricted:NoSchedule`
+* Include **anti-affinity rules** to prevent TIE Fighters from clustering on a single node
 
 ---
 
-### ⚙️ Phase III: launch the Squadron
+### ⚙️ Phase III: Launch the Squadron
 
-3. **Apply your deployment**
+3. **Apply your Deployment**
 
 ```bash
 kubectl apply -f squadron.yaml
 ```
 
-4. **Verify pod placement**
+4. **Verify Pod Placement**
 
 ```bash
 kubectl get pods -o wide
 ```
 
-✅ Ensure that pods:
+✅ Confirm that pods:
 
-- Run **only on the Star Destroyer node**
-- Are distributed across nodes (if multiple Star Destroyer nodes exist)
-- Respect the anti-affinity rule
+* **Only land** on tainted Star Destroyer nodes
+* Are **spread out** across different nodes via anti-affinity
+* Have **not been scheduled** onto unapproved (untainted) nodes
 
 ---
 
 ### ⚙️ Phase IV: test Rebel infiltration
 
-5. **Attempt to deploy a Rebel craft**
+5. Taint the `aks-systempool` and `aks-userpool` nodes with `access=restricted:NoSchedule`
+```bash
+kubectl taint node aks-systempool-<<identifier>> access=restricted:NoSchedule
+kubectl taint node aks-systempool-<<identifier>> access=restricted:NoSchedule
+```
 
-Create a pod with no toleration or node selector.
+6. **Attempt to Deploy a Rebel Craft**
 
-⛔ This pod should remain **unscheduled** due to the taint on the Star Destroyer.
+Create a pod with **no toleration**:
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: xwing
+spec:
+  containers:
+    - name: xwing
+      image: nginx
+      ports:
+        - containerPort: 80
+```
+
+```bash
+kubectl apply -f xwing.yaml
+```
+
+⛔ This pod should remain **unscheduled**, blocked by the taint on the Star Destroyer node.
+
+```bash
+kubectl describe pod xwing
+```
+
+Look for a message like:
+
+> `0/3 nodes are available: 3 node(s) had taint {access=restricted: NoSchedule}, that the pod didn't tolerate.`
+
+7. Untaint the `aks-systempool` and `aks-userpool` nodes
+```bash
+kubectl taint node aks-systempool-<<identifier>> access=restricted:NoSchedule-
+kubectl taint node aks-systempool-<<identifier>> access=restricted:NoSchedule-
+```
 
 ---
 
 ## 📚 Resources
 
-- [Az CLI](https://learn.microsoft.com/en-us/cli/azure/aks/nodepool?view=azure-cli-latest#az-aks-nodepool-add)
-- [Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)
-- [Assigning Pods to Nodes](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)
-- [Pod Affinity and Anti-Affinity](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity)
+* [Az CLI: Add Node Pool](https://learn.microsoft.com/en-us/cli/azure/aks/nodepool?view=azure-cli-latest#az-aks-nodepool-add)
+* [Taints and Tolerations](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/)
+* [Pod Affinity and Anti-Affinity](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#affinity-and-anti-affinity)
