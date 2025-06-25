@@ -26,15 +26,31 @@ You will:
 
 1.  Deploy the NGINX Gateway Fabric Controller
 
-The manifests are found at: https://raw.githubusercontent.com/nginx/nginx-gateway-fabric/v2.0.1/deploy/crds.yaml
+The manifests are found at: 
+* https://raw.githubusercontent.com/nginx/nginx-gateway-fabric/v2.0.1/deploy/crds.yaml
+* https://raw.githubusercontent.com/nginx/nginx-gateway-fabric/v2.0.1/deploy/default/deploy.yaml
+
 
 2.  Create the Gateway Resource
 
-Create a Gateway that listens on HTTP (port 80)
+Create a Gateway that listens on HTTP with the following specifications:
 
-3.  Create the HTTPRoute to TIE Squadron
+* name: hyperspace-gateway
+* namespace: nginx-gateway
+* hostname: "*.outerrim.com"
+* port: 80
+* protocol: HTTP
+* allow routes from all namespaces
 
-4.  Validate the Gateway Setup
+3.  Create the HTTPRoute to TIE Squadron with `tie-fighter.outerrim.com` as hostname in the same namespace as the `tie-squadron deployment`
+
+4. Port-forward to the `hyperspace-gateway-nginx` service in the `nginx-gateway` namespace to port 8080
+
+5.  Validate the Gateway Setup
+
+```bash
+curl http://tie-fighter.outerrim.com:8080 --resolve tie-fighter.outerrim.com:8080:127.0.0.1
+```
 
 ---
 

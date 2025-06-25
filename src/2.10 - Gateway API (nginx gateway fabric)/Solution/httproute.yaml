@@ -7,11 +7,14 @@ metadata:
 spec:
   parentRefs:
   - name: hyperspace-gateway
+    namespace: nginx-gateway
+  hostnames:
+  - tie-fighter.outerrim.com
   rules:
   - matches:
     - path:
         type: PathPrefix
-        value: /squadron
+        value: /
     backendRefs:
-    - name: tie-squadron
+    - name: squadron
       port: 80
