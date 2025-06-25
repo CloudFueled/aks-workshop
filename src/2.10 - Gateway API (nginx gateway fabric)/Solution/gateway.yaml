@@ -3,7 +3,7 @@ apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
   name: hyperspace-gateway
-  namespace: default
+  namespace: nginx-gateway
 spec:
   gatewayClassName: nginx
   listeners:
@@ -12,4 +12,5 @@ spec:
     port: 80
     allowedRoutes:
       namespaces:
-        from: Same
+        from: All
+    hostname: "*.outerrim.com"
