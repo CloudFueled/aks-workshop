@@ -66,10 +66,9 @@ kubectl run httpd \
 
 9. Create a pod interactively named `curl` using the image `curlimages/curl:latest` in the `default` namespace, and curl the httpd pod
 ```bash
-kubectl run -it busybox \
+kubectl run -it curl \
   --image=curlimages/curl:latest \
-  --restart=Never \
-  -- sh
+  --restart=Never
 ```
 
 🧾 **Expected output**: It works!
