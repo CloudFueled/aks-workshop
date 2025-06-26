@@ -69,6 +69,7 @@ kubectl run httpd \
 kubectl run -it curl \
   --image=curlimages/curl:latest \
   --restart=Never
+  -- sh
 ```
 
 🧾 **Expected output**: It works!
