@@ -17,26 +17,14 @@ spec:
       serviceAccountName: app-service-account
       containers:
       - name: app
-        image: busybox:1.35
+        image: curlimages/curl:8.5.0
         command: ['sh', '-c']
         args:
         - |
-          echo "Trying to access secret..."
-          cat /var/secrets/username
-          cat /var/secrets/password
-          echo "Secret access successful!"
+          echo "Requesting secret via Kubernetes API..."
+          TOKEN=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
+          curl -s -H "Authorization: Bearer $TOKEN" \
+               --cacert /var/run/secrets/kubernetes.io/serviceaccount/ca.crt \
+               https://kubernetes.default.svc/api/v1/namespaces/secure-app/secrets/app-credentials
+          echo "Finished API request."
           sleep 3600
-        volumeMounts:
-        - name: secret-volume
-          mountPath: /var/secrets
-          readOnly: true
-        env:
-        - name: API_TOKEN
-          valueFrom:
-            secretKeyRef:
-              name: application-secrets
-              key: api-token
-      volumes:
-      - name: secret-volume
-        secret:
-          secretName: app-credentials
