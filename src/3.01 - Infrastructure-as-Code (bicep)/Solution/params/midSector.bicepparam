@@ -3,9 +3,28 @@ using '../main.bicep'
 
 // MARK: Global
 param location = 'northeurope'
+param tags = {
+  Environment: 'Imperial Outpost'
+  Owner: 'Darth Vader'
+  Purpose: 'Training and Operations'
+  ManagedWith: 'Bicep'
+}
 
 // MARK: AKS Parameters
 param clusterName = 'aks-imperial-outpost'
+param systemNodeVmSize = 'Standard_D4ads_v6'
+param userNodeVmSize = 'Standard_D4ads_v6'
+param minCount = 1
+param maxCount = 5
+param systemNodeCount = 1
+param userNodeCount = 1
+param osDiskSizeGB = 64
+param podCidr = '172.16.0.0/16'
+
+// MARK: Managed Identity Parameters
+param managedIdentityName = 'id-eso-${clusterName}'
+param federatedCredentialName = 'external-secrets'
+param subject = 'system:serviceaccount:external-secrets:sa-external-secrets'
 
 // MARK: Key Vault
 param skuName = 'standard'
@@ -14,5 +33,3 @@ param roleAssignment = {
   principalType: 'User'
   roleDefinitionId: '00482a5a-887f-4fb3-b363-3b7fe8e74483' // Key Vault Administrator
 }
-param secretName = 'deathstar-plans-encryption-key'
-param secretValue = 'Th3s3AreN0tTh3PlansY0uAr3L00kingF0r'

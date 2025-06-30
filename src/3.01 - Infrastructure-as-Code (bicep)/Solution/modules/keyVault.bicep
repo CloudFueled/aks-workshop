@@ -16,14 +16,9 @@ param keyVaultName string
 param skuName string
 
 @description('Role Assignment for the Key Vault.')
-param roleAssignmentConfiguration object
+param roleAssignments object[]
 
-@description('The Name of the Key Vault Secret.')
-param secretName string
-
-@description('The Value of the Key Vault Secret.')
-@secure()
-param secretValue string
+param tags object
 
 // MARK: Resources
 
@@ -39,27 +34,21 @@ resource keyVault 'Microsoft.KeyVault/vaults@2024-12-01-preview' = {
     enableRbacAuthorization: true
     tenantId: subscription().tenantId
   }
+  tags: tags
 }
 
 // MARK: Role Assignments
-resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [
+  for role in roleAssignments: {
     scope: keyVault
-    name: guid(roleAssignmentConfiguration.roleDefinitionId, roleAssignmentConfiguration.principalId, keyVault.name)
+    name: guid(role.roleDefinitionId, role.principalId, keyVault.name)
     properties: {
-      principalId: roleAssignmentConfiguration.principalId
-      principalType: roleAssignmentConfiguration.principalType
-      roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', roleAssignmentConfiguration.roleDefinitionId)
+      principalId: role.principalId
+      principalType: role.principalType
+      roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', role.roleDefinitionId)
     }
   }
-
-// MARK: Secrets
-resource secret 'Microsoft.KeyVault/vaults/secrets@2024-12-01-preview' = {
-  parent: keyVault
-  name: secretName
-  properties: {
-    value: secretValue
-  }
-}
+]
 
 // MARK: Outputs
 output id string = keyVault.id

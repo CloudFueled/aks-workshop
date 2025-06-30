@@ -22,5 +22,3 @@ resource keyVault 'Microsoft.KeyVault/vaults@2024-12-01-preview' = {
     enableRbacAuthorization: true
   }
 }
-
-// MARK: Outputs

@@ -15,7 +15,7 @@ Using **Bicep**, the Empire’s official Infrastructure as Code standard, you ar
 You will:
 
 - Extend an existing `main.bicep` file
-- Add a **User Assigned Managed Identity** for secrets integration
+- Add a **User Assigned Managed Identity** with **Federated Credentials** for secrets integration
 - Deploy a **Key Vault** in a dedicated resource group with RBAC
 - Store a top-secret value
 - Enable **Advanced Container Networking Services (ACNS)** and **L7 Network Policies** on your AKS cluster after provisioning
@@ -28,28 +28,35 @@ You will:
 
 Locate the `main.bicep` file and complete the following TODOs:
 
-- Define a **Key Vault Resource Group**:
+- Define a **User Assigned Managed Identity** module in the modules folder:
+
+  - Use the `Microsoft.ManagedIdentity/userAssignedIdentities@2025-01-31-preview` API version
+  - Set the `location` to the same as the AKS cluster
+  - Use a unique name for the identity
+  - Create a federated credential with the following specifications:
+
+    - audience: `api://AzureADTokenExchange`
+    - issuer: the oidcIssuerURL from the AKS cluster
+    - subject: `system:serviceaccount:external-secrets:sa-external-secrets`
+
+- Define a **Key Vault Resource Group** in the `main.bicep` file:
 
   - Define it as a `resource`
   - Use the same location as the AKS cluster
 
-- Create/extend the Azure Key Vault module in the modules folder:
+- Extend the Azure Key Vault module in the modules folder:
 
   - Use the `Microsoft.KeyVault/vaults@2024-12-01-preview` API version
   - Parameterize the Key Vault `name` and `sku`
   - The `sku family` should be set to `A`
   - Enable **RBAC** by setting `enableRbacAuthorization: true`
 
+- Define and deploy an **User Managed Identity** with the modified module.
 - Define and deploy a **Key Vault** with the modified module.
-- Define a **User Assigned Managed Identity** in the `main.bicep` file:
-
-  - Use the `Microsoft.ManagedIdentity/userAssignedIdentities@2025-01-31-preview` API version
-  - Set the `location` to the same as the AKS cluster
-  - Use a unique name for the identity
-
 - Assign the Managed Identity to the Key Vault with the `Key Vault Administrator` role
+- Assign yourself to the Key Vault with the `Key Vault Administrator` role
 - Make sure the tags are propagated to all resources, including the Key Vault and Managed Identity.
-- Manually add a Key Vault secret in the newly created Key Vault:
+- Manually add a Key Vault secret in the newly created Key Vault
 
 1.  Deploy the Resources
 
@@ -91,6 +98,14 @@ You should see:
 
 - `enabled: true`
 - `advancedNetworkPolicies: L7`
+
+4. Fetch the credentials to be able to connect to the cluster
+
+```bash
+az aks get-credentials \
+  --resource-group <Resource Group Name> \
+  --name <Cluster Name> 
+```
 
 ---
 
