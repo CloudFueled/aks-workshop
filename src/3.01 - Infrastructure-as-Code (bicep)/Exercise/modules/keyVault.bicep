@@ -8,6 +8,8 @@ param skuName string
 @description('The Sku Name for the Key Vault.')
 param kvName string
 
+// TODO: Add RoleAssignments parameter
+
 // MARK: Resources
 resource keyVault 'Microsoft.KeyVault/vaults@2024-12-01-preview' = {
   name: kvName
@@ -22,3 +24,5 @@ resource keyVault 'Microsoft.KeyVault/vaults@2024-12-01-preview' = {
     enableRbacAuthorization: true
   }
 }
+
+// TODO: Add Role Assignment resource

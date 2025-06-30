@@ -24,9 +24,7 @@ You will:
 
 ## 🧭 Step-by-step: orders from the Imperial DevSecOps command
 
-1.  Review and Extend the `main.bicep`
-
-Locate the `main.bicep` file and complete the following TODOs:
+1. Create / extend the modules
 
 - Define a **User Assigned Managed Identity** module in the modules folder:
 
@@ -39,26 +37,28 @@ Locate the `main.bicep` file and complete the following TODOs:
     - issuer: the oidcIssuerURL from the AKS cluster
     - subject: `system:serviceaccount:external-secrets:sa-external-secrets`
 
+- Extend the Azure Key Vault module in the modules folder:
+
+  - Add a roleAssignments parameter to the Key Vault module
+  - Add a resource roleAssignment that loops over the entries in the roleAssignments parameter
+
+
+2.  Review and Extend the `main.bicep`
+
+Locate the `main.bicep` file and complete the following TODOs:
+
 - Define a **Key Vault Resource Group** in the `main.bicep` file:
 
   - Define it as a `resource`
   - Use the same location as the AKS cluster
 
-- Extend the Azure Key Vault module in the modules folder:
-
-  - Use the `Microsoft.KeyVault/vaults@2024-12-01-preview` API version
-  - Parameterize the Key Vault `name` and `sku`
-  - The `sku family` should be set to `A`
-  - Enable **RBAC** by setting `enableRbacAuthorization: true`
-
-- Define and deploy an **User Managed Identity** with the modified module.
+- Define and deploy an **User Managed Identity** with the created module.
 - Define and deploy a **Key Vault** with the modified module.
 - Assign the Managed Identity to the Key Vault with the `Key Vault Administrator` role
 - Assign yourself to the Key Vault with the `Key Vault Administrator` role
 - Make sure the tags are propagated to all resources, including the Key Vault and Managed Identity.
-- Manually add a Key Vault secret in the newly created Key Vault
 
-1.  Deploy the Resources
+3.  Deploy the Resources
 
 First, register the necessary feature for Advanced Networking:
 
@@ -85,7 +85,7 @@ az deployment sub create \
 
 > 🛰️ _ACNS ensures your cluster enforces advanced network segmentation, crucial for preventing Rebel interference._
 
-3.  Confirm the ACNS Configuration
+4.  Confirm the ACNS Configuration
 
 ```bash
 az aks show \
@@ -99,13 +99,15 @@ You should see:
 - `enabled: true`
 - `advancedNetworkPolicies: L7`
 
-4. Fetch the credentials to be able to connect to the cluster
+5. Fetch the credentials to be able to connect to the cluster
 
 ```bash
 az aks get-credentials \
   --resource-group <Resource Group Name> \
   --name <Cluster Name> 
 ```
+
+6. Manually add a Key Vault secret in the newly created Key Vault
 
 ---
 
