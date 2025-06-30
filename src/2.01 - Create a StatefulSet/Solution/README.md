@@ -57,8 +57,10 @@ kubectl apply -f statefulset.yaml
 5. Copy the index.html file into the container
 
 ```bash
-kubectl cp index.html relay-0:/usr/share/nginx/html/index.html
+kubectl cp index.html relay-0:/usr/share/nginx/html/index.html -n imperial-net
 ```
+
+** It's possible that you need to do this more than one **
 
 6. Then inspect the pods and index.html file:
 
@@ -97,10 +99,10 @@ kubectl port-forward -n imperial-net pod/relay-0 8080:80
 
 ## 🧪 Bonus Challenge
 
-1. Scale the StatefulSet to 5 replicas:
+1. Scale the StatefulSet to 15 replicas:
 
    ```bash
-   kubectl scale statefulset relay --replicas=30 -n imperial-net
+   kubectl scale statefulset relay --replicas=15 -n imperial-net
    ```
 
 2. Validate:
@@ -108,6 +110,12 @@ kubectl port-forward -n imperial-net pod/relay-0 8080:80
    - New pods continue the naming sequence
    - PVCs are automatically created and bound
    - Log files remain intact after pod restarts
+
+3. Scale the StatefulSet to 3 replicas:
+
+   ```bash
+   kubectl scale statefulset relay --replicas=3 -n imperial-net
+   ```
 
 ---
 

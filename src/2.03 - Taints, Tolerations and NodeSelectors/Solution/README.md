@@ -137,6 +137,12 @@ kubectl taint node aks-systempool-<<identifier>> access=restricted:NoSchedule-
 kubectl taint node aks-systempool-<<identifier>> access=restricted:NoSchedule-
 ```
 
+8. Delete the deployment
+
+```bash
+kubectl delete -f squadron.yaml
+```
+
 ---
 
 ## 📚 Resources

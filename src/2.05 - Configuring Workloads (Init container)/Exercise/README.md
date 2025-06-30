@@ -44,6 +44,12 @@ Modify your existing `squadron.yaml` manifest to:
 
 8. Confirm that the sidecar logs the preflight message
 
+9. Delete the deployment
+
+```bash
+kubectl delete -f squadron.yaml
+```
+
 ---
 
 ## 📚 Resources

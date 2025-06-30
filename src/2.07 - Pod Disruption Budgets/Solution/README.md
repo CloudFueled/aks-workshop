@@ -64,6 +64,12 @@ This confirms that at most **1 pod may be disrupted** at a time.
 
 ---
 
+4. Delete the deployment
+
+```bash
+kubectl delete -f squadron.yaml
+```
+
 ## 📚 Resources
 
 - [Pod Disruption Budgets](https://kubernetes.io/docs/concepts/workloads/pods/disruptions/)

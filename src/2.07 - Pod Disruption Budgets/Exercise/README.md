@@ -82,6 +82,12 @@ This confirms that the disruption policy is active and enforced. At most **1 pod
 
 ---
 
+4. Delete the deployment
+
+```bash
+kubectl delete -f squadron.yaml
+```
+
 ## 📚 Resources
 
 - [Pod Disruption Budgets](https://kubernetes.io/docs/concepts/workloads/pods/disruptions/)

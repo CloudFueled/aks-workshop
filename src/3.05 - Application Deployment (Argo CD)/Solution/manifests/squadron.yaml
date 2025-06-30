@@ -25,24 +25,3 @@ spec:
             limits:
               cpu: "200m"
               memory: "128Mi"
-          env:
-            - name: SCANNER_MODE
-              valueFrom:
-                configMapKeyRef:
-                  name: tie-systems
-                  key: scannerMode
-            - name: ENGINE_TUNING
-              valueFrom:
-                configMapKeyRef:
-                  name: tie-systems
-                  key: engineTuning
-            - name: TARGETING_AI
-              valueFrom:
-                secretKeyRef:
-                  name: tie-weapons
-                  key: targetingAI
-            - name: FIRE_CONTROL_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: tie-weapons
-                  key: fireControlKey
