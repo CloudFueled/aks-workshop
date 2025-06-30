@@ -26,7 +26,10 @@ All tasks must be completed as **declaratively as possible**—use manifests, no
 
 1.  Create the ServiceAccount Manifest
 
-Create a YAML manifest file named `sa-squadron.yaml` with the following content
+Create a YAML manifest file for the ServiceAccount `sa-squadron.yaml` with the following specification:
+
+* namespace: default
+* name: sa-squadron
 
 ---
 

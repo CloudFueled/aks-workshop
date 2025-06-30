@@ -6,6 +6,7 @@ metadata:
 data:
   init.sql: |
     CREATE DATABASE IF NOT EXISTS appdb;
+    DROP USER IF EXISTS 'appuser'@'%';
     CREATE USER 'appuser'@'%' IDENTIFIED BY 'password';
     GRANT ALL PRIVILEGES ON appdb.* TO 'appuser'@'%';
     FLUSH PRIVILEGES;

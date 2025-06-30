@@ -31,7 +31,7 @@ spec:
         args:
         - |
           echo "Waiting for database to be ready..."
-          while [ ! -f /shared/database-ready ]; do
+          while [ ! -f /shared/db-ready ]; do
             echo "Still waiting..."
             sleep 5
           done
@@ -39,19 +39,10 @@ spec:
         volumeMounts:
         - name: shared-data
           mountPath: /shared
-      containers:
-      - name: web-app
-        image: nginx:1.21
-        ports:
-        - containerPort: 80
-        volumeMounts:
-        - name: shared-data
-          mountPath: /app/shared
-        - name: app-logs
-          mountPath: /var/log/nginx
       - name: log-shipper
         image: busybox:1.35
         command: ['sh', '-c']
+        restartPolicy: Always
         args:
         - |
           echo "Starting log shipper..."
@@ -68,6 +59,16 @@ spec:
         volumeMounts:
         - name: application-logs
           mountPath: /logs
+      containers:
+      - name: web-app
+        image: nginx:1.21
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: shared-data
+          mountPath: /app/shared
+        - name: application-logs
+          mountPath: /var/log/nginx
       volumes:
       - name: init-scripts
         configMap:
@@ -75,5 +76,5 @@ spec:
           defaultMode: 0755
       - name: shared-data
         emptyDir: {}
-      - name: app-logs
+      - name: application-logs
         emptyDir: {}
