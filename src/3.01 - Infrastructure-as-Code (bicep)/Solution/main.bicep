@@ -56,7 +56,7 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2025-04-01' = {
   name: keyVaultResourceGroupName
   location: location
   tags: {
-    'Created By': 'Bicep'
+    CreatedBy: 'Bicep'
     Owner: 'Death Star Operations Inc.'
   }
 }
@@ -66,7 +66,7 @@ module keyVault 'modules/keyVault.bicep' = {
   scope: resourceGroup
   params: {
     location: location
-    keyVaultName: keyVaultName 
+    keyVaultName: keyVaultName
     skuName: skuName
     roleAssignmentConfiguration: roleAssignment
     secretName: secretName

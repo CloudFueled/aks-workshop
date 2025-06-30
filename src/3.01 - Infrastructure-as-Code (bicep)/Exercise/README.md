@@ -28,20 +28,47 @@ You will:
 
 Locate the `main.bicep` file and complete the following TODOs:
 
-- Define a **Key Vault Resource Group**
-- Deploy a **Key Vault** with RBAC (`enableRbacAuthorization: true`)
-- Add a **secret**
+- Define a **Key Vault Resource Group**:
 
-2.  Deploy the Resources
+  - Define it as a `resource`
+  - Use the same location as the AKS cluster
+
+- Create/extend the Azure Key Vault module in the modules folder:
+
+  - Use the `Microsoft.KeyVault/vaults@2024-12-01-preview` API version
+  - Parameterize the Key Vault `name` and `sku`
+  - The `sku family` should be set to `A`
+  - Enable **RBAC** by setting `enableRbacAuthorization: true`
+
+- Define and deploy a **Key Vault** with the modified module.
+- Define a **User Assigned Managed Identity** in the `main.bicep` file:
+
+  - Use the `Microsoft.ManagedIdentity/userAssignedIdentities@2025-01-31-preview` API version
+  - Set the `location` to the same as the AKS cluster
+  - Use a unique name for the identity
+
+- Assign the Managed Identity to the Key Vault with the `Key Vault Administrator` role
+- Make sure the tags are propagated to all resources, including the Key Vault and Managed Identity.
+- Manually add a Key Vault secret in the newly created Key Vault:
+
+1.  Deploy the Resources
+
+First, register the necessary feature for Advanced Networking:
+
+```bash
+az feature register --namespace Microsoft.ContainerService --name AdvancedNetworkingL7PolicyPreview
+```
+
+Then, ensure you have the latest version of the `aks-preview` extension:
+
+```bash
+az extension add --name aks-preview
+az extension update --name aks-preview
+```
 
 Use the following command to deploy:
 
 ```bash
-az feature register --namespace Microsoft.ContainerService --name AdvancedNetworkingL7PolicyPreview
-
-az extension add --name aks-preview
-az extension update --name aks-preview
-
 az deployment sub create \
   --location francecentral \
   --template-file main.bicep \
@@ -49,27 +76,15 @@ az deployment sub create \
   --parameters params/midSector.bicepparam
 ```
 
-3.  Enable Advanced Container Networking (ACNS)
-
-After successful provisioning of the AKS cluster using Bicep, you must now **update the cluster** to enable **L7-aware network policies** using the Azure CLI:
-
-```bash
-az aks update \
-  --resource-group rg-imperial-outpost-aks \
-  --name aks-imperial-outpost \
-  --enable-acns \
-  --acns-advanced-networkpolicies L7
-```
-
 > 🛰️ _ACNS ensures your cluster enforces advanced network segmentation, crucial for preventing Rebel interference._
 
-4.  Confirm the ACNS Configuration
+3.  Confirm the ACNS Configuration
 
 ```bash
 az aks show \
   --resource-group rg-imperial-outpost-aks \
   --name aks-imperial-outpost \
-  --query addonProfiles.acns
+  --query networkProfile.advancedNetworking.security
 ```
 
 You should see:
@@ -78,5 +93,10 @@ You should see:
 - `advancedNetworkPolicies: L7`
 
 ---
+
 ## 📚 Resources
-* [What is Advanced Container Networking Services](https://learn.microsoft.com/en-us/azure/aks/advanced-container-networking-services-overview?tabs=cilium)
+
+- [What is Advanced Container Networking Services](https://learn.microsoft.com/en-us/azure/aks/advanced-container-networking-services-overview?tabs=cilium)
+- [Azure Key Vault](https://learn.microsoft.com/en-us/azure/templates/microsoft.keyvault/vaults?pivots=deployment-language-bicep)
+- [Azure Resource Group](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/create-resource-group)
+- [Azure Managed Identity](https://learn.microsoft.com/en-us/azure/templates/microsoft.managedidentity/userassignedidentities?pivots=deployment-language-bicep)
