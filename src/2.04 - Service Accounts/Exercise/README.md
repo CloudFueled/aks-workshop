@@ -31,19 +31,22 @@ Create a YAML manifest file for the ServiceAccount `sa-squadron.yaml` with the f
 * namespace: default
 * name: sa-squadron
 
----
-
 2.  Update the Deployment Manifest
 
 Update your existing `squadron.yaml` deployment to include the `serviceAccountName` field
-
----
 
 3.  Verify Pod Identity
 
 Confirm that the squadron pods are using the correct service account
 
 You should see all pods using `sa-squadron`.
+
+4. Delete the deployment
+
+```bash
+kubectl delete -f squadron.yaml
+```
+
 
 ---
 

@@ -22,11 +22,17 @@ Deploy a **TIE Fighter pod** with:
 
 ## 🧭 Step-by-step: probe the Fighters
 
-01. Add a `Startup Probe`, `Liveness Probe` and `Readiness Probe` to the `squadron` deployment
+1. Add a `Startup Probe`, `Liveness Probe` and `Readiness Probe` to the `squadron` deployment
 
-02. Deploy the `squadron` deployment with Probes
+2. Deploy the `squadron` deployment with Probes
 
-03. Inspect Probe Status
+3. Inspect Probe Status
+
+4. Delete the deployment
+
+```bash
+kubectl delete -f squadron.yaml
+```
 
 ---
 

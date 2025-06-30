@@ -59,6 +59,12 @@ This ensures the TIE Fighters declare minimal resource usage and cannot exceed t
 
 The pod should either be **evicted**, **throttled**, or **remain pending**, depending on the scenario.
 
+3. Delete the deployment
+
+```bash
+kubectl delete -f squadron.yaml
+```
+
 ---
 
 ## 📚 Resources

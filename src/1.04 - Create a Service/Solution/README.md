@@ -20,19 +20,19 @@ In Kubernetes, this means **exposing your Deployment** using a **Service**.
 
 ### ⚙️ Phase I: internal comms – ClusterIP + port forwarding
 
-1. **Create a ClusterIP `Service` manifest**
+1. Create a ClusterIP `Service` manifest
    <br />
    Define a YAML file named `service.yaml` that specifies a `ClusterIP` service to expose your Deployment internally. For example:
 
-2. **Apply the ClusterIP Service**
+2. Apply the ClusterIP Service
    <br />
    Transmit the initial comm relay to the cluster
 
-3. **Verify the Service**
+3. Verify the Service
    <br />
    Confirm that the internal relay is active
 
-4. **Establish communication via port forwarding**
+4. Establish communication via port forwarding
    Temporarily forward traffic from your machine to the service using:
    ```bash
    kubectl port-forward service/tie-squadron 8080:80
@@ -45,7 +45,7 @@ This simulates direct command relaying from an internal Imperial system.
 
 ### ⚙️ Phase II: Sector-Wide Comms – Upgrade to LoadBalancer
 
-5. **Update the Service to LoadBalancer**
+5. Update the Service to LoadBalancer
    Edit your existing service file or use the command line to change its type to `LoadBalancer`, making it accessible from outside the cluster (within your network)
 
 Change:
@@ -62,7 +62,13 @@ type: LoadBalancer
 
 Save and exit.
 
-7. **Test external access to the LoadBalancer**
+7. Test external access to the LoadBalancer
+
+8. Delete the deployment
+
+```bash
+kubectl delete -f squadron.yaml
+```
 
 ---
 

@@ -24,19 +24,19 @@ As an Imperial deployment officer, your orders are to:
 
 ## 🧭 Step-by-step: deploying a TIE Fighter Squadron
 
-1. **Define the `Deployment` manifest**
+1. Define the `Deployment` manifest
 
    Create a YAML file (e.g., `squadron.yaml`) that specifies the desired number of TIE fighter pods, the container image, and basic metadata. This will serve as your Imperial deployment order.
 
-2. **Apply the Deployment to the cluster**
+2. Apply the Deployment to the cluster
 
    Use the command console to transmit the launch order to the Kubernetes control center (a.k.a., the Star Destroyer’s command bridge):
 
-3. **Verify the Squadron is airborne**
+3. Verify the Squadron is airborne
 
    Ensure your TIE fighters have launched and are patrolling the sector
 
-4. **Scale the Squadron**
+4. Scale the Squadron
 
    If Rebel activity intensifies, reinforce your squadron
 
@@ -60,13 +60,15 @@ As an Imperial deployment officer, your orders are to:
    replicas: 10
    ```
 
-5. **Observe Pod self-healing in action**
+5. Observe Pod self-healing in action
 
    Terminate a pod manually to simulate battle damage
 
-   ```bash
-   kubectl delete po
-   ```
+6. Delete the deployment
+
+```bash
+kubectl delete -f squadron.yaml
+```
 
 ---
 

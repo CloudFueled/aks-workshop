@@ -23,15 +23,15 @@ Your task as an Imperial deployment officer:
 
 ## 🧭 Step-by-step: deploying a TIE Fighter
 
-1. **Define the `Pod` manifest**
+1. Define the `Pod` manifest
 
    Create a YAML file (e.g., `tie-fighter.yaml`) that describes your TIE fighter pod—its metadata, container image (`nginx`), and any configuration needed for launch. This file serves as your flight authorization form.
 
-2. **Apply the Pod manifest to the cluster**
+2. Apply the Pod manifest to the cluster
 
    Use the command console to transmit the launch order to the Kubernetes control center
 
-3. **Verify the Pod is airborne**
+3. Verify the Pod is airborne
 
    Confirm that the TIE fighter has successfully launched and is patrolling the designated sector
 

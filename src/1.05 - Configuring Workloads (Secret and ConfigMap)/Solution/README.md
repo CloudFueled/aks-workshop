@@ -36,13 +36,13 @@ The Empire is issuing a battlefield upgrade to your deployed TIE squadron. This 
 
 ### ⚙️ Phase I: define configuration blueprints
 
-1. **Create a ConfigMap**
+1. Create a ConfigMap
    Create a manifest file (`tie-systems-configmap.yaml`) containing these **data fields**:
 
 * `SCANNER_MODE`: `infrared`
 * `ENGINE_TUNING`: `aggressive`
 
-2. **Create a Secret**
+2. Create a Secret
    Create a manifest file (`tie-weapons-secret.yaml`) containing the following **sensitive data**:
 
 * `targetingAI`: `lockdown-mode`
@@ -53,7 +53,7 @@ The Empire is issuing a battlefield upgrade to your deployed TIE squadron. This 
 
 ### ⚙️ Phase II: update the deployment to use the new systems
 
-3. **Modify your TIE Fighter Deployment**
+3. Modify your TIE Fighter Deployment
    Update your existing `squadron.yaml` so the pods receive the above values via **environment variables**.
 
 The following variable names should be configured in your container spec:
@@ -70,17 +70,23 @@ The following variable names should be configured in your container spec:
 
 ### ⚙️ Phase III: deploy and verify
 
-4. **Apply the ConfigMap and Secret to the cluster**
+4. Apply the ConfigMap and Secret to the cluster
 
-5. **Apply the updated Deployment**
+5. Apply the updated Deployment
 
-6. **Verify configuration inside the Pods**
+6. Verify configuration inside the Pods
    Use `kubectl exec` and `printenv` or `cat` to inspect the injected values:
 
 ```bash
 kubectl get pods
 kubectl exec -it <pod-name> -- printenv | grep SCANNER
 kubectl exec -it <pod-name> -- printenv | grep FIRE
+```
+
+7. Delete the deployment
+
+```bash
+kubectl delete -f squadron.yaml
 ```
 
 ---
