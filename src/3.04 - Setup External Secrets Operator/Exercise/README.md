@@ -6,7 +6,7 @@ The Empire’s DevOps command now mandates all mission-critical credentials—su
 
 To enforce this, we’ll use the **External Secrets Operator**, **Workload Identity Federation**, and **ArgoCD integration** to automatically and securely sync your DevOps tokens into your Kubernetes cluster.
 
-> *"Secrets are the currency of control. Let them flow only through sanctioned channels."* – Moff Gideon, Cybersecurity Division
+> _"Secrets are the currency of control. Let them flow only through sanctioned channels."_ – Moff Gideon, Cybersecurity Division
 
 ---
 
@@ -33,8 +33,8 @@ You will:
 
 1. Generate a PAT from [Azure DevOps](https://dev.azure.com/):
 
-   * Scope: **Code (Read)** and **Service Connections (Read/Write)**
-   * Expiry: 30–90 days (for demo purposes)
+   - Scope: **Code (Read)** and **Service Connections (Read/Write)**
+   - Expiry: 30–90 days (for demo purposes)
 
 2. Store the PAT in Azure Key Vault:
 
@@ -67,9 +67,9 @@ helm install external-secrets external-secrets/external-secrets \
 
 Use a Bicep template to:
 
-* Create a **User Assigned Managed Identity (UAMI)**
-* Assign it **Key Vault Secrets User** role scoped to the vault
-* Set up the **federated identity credential** on the UAMI
+- Create a **User Assigned Managed Identity (UAMI)**
+- Assign it **Key Vault Secrets User** role scoped to the vault
+- Set up the **federated identity credential** on the UAMI
 
 Deploy:
 
@@ -151,8 +151,8 @@ spec:
 
 ## 📚 Resources
 
-* [ClusterSecretStore](https://external-secrets.io/latest/api/clustersecretstore/)
+- [ClusterSecretStore](https://external-secrets.io/latest/api/clustersecretstore/)
 
-* [ClusterExternalSecret](https://external-secrets.io/latest/api/clusterexternalsecret/)
+- [ClusterExternalSecret](https://external-secrets.io/latest/api/clusterexternalsecret/)
 
-* [Repository Credential](https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#repository-credentials)
+- [Repository Credential](https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#repository-credentials)
