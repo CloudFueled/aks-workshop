@@ -32,6 +32,8 @@ You will:
 > 📡 This will give each pod a **DNS entry** like:
 > `relay-0.relay.imperial-net.svc.cluster.local`
 
+You will need to create the namespace first.
+
 ---
 
 ### ⚙️ Phase II: define the StatefulSet
@@ -116,3 +118,8 @@ kubectl port-forward -n imperial-net pod/relay-0 8080:80
 ## ❓ Empire Debrief – Storage Strategy
 
 > **Where is this data stored in Azure? What resource is used for persistent storage?**
+
+## 📚 Resources
+
+- [Services](https://kubernetes.io/docs/concepts/services-networking/service/)
+- [StatefulSets](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/)

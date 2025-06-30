@@ -41,7 +41,7 @@ He’s... monitoring the logs.
 - Azure subscription with no network restrictions
 - WSL2 with the following installed:
 
-  - Fully up-to-date
+  - Fully up-to-date distro
 
     ```bash
     sudo apt update
@@ -95,6 +95,8 @@ He’s... monitoring the logs.
 
 - If you encounter connection issues with `kubectl` commands, ensure your WSL2 is properly configured to access the Azure AKS cluster (correct kube context).
 
+Make sure to replace `<username>` with your actual Windows username in the following commands.
+
 ```bash
-echo ‘export KUBECONFIG=”/mnt/c/Users/{{username}}/.kube/config”’ >> ~/.bashrc
+echo 'export KUBECONFIG="/mnt/c/Users/<username>/.kube/config"' >> ~/.bashrc
 ```
