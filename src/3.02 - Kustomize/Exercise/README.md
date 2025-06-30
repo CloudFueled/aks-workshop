@@ -14,7 +14,7 @@ To maintain uniform control and reduce manual misconfiguration by rebel infiltra
 
 As a systems officer in DevOps Command, your mission is to:
 
-1. Create a **Kustomization base** for the `tie-squadron` deployment and service.
+1. Create a **Kustomization base** for the `squadron` deployment and service.
 2. Create **overlays** for:
 
    * A **staging** environment with 1 replica.
@@ -28,7 +28,7 @@ As a systems officer in DevOps Command, your mission is to:
 
 ### 1. 🔧 Establish the Base
 
-Inside `bases/squadron/`, define the **deployment** and **service** manifests. Then create a `kustomization.yaml` to include them both.
+Inside `base/squadron/`, define the **deployment** and **service** manifests. Then create a `kustomization.yaml` to include them both.
 
 ```yaml
 # bases/tie-squadron/kustomization.yaml
@@ -48,10 +48,10 @@ Inside `overlays/staging/`, create:
 
 ```yaml
 # overlays/staging/kustomization.yaml
-resources:
-  - ../../bases/tie-squadron
-patchesStrategicMerge:
-  - patch.yaml
+bases:
+- ../../bases/tie-squadron
+patches:
+- patch.yaml
 ```
 
 ```yaml
@@ -89,13 +89,7 @@ kubectl apply -k overlays/staging/
 kubectl apply -k overlays/production/
 ```
 
-Use `kubectl get deployment tie-squadron` to confirm the correct `replicas` and configuration.
-
----
-
-## 🔍 Bonus Challenge
-
-Create an additional overlay for `mustafar/` that includes a **Node Affinity rule** to schedule pods on hot-zone nodes only (e.g., labeled `env=volcanic`).
+Use `kubectl get deployment squadron` to confirm the correct `replicas` and configuration.
 
 ---
 
@@ -103,8 +97,8 @@ Create an additional overlay for `mustafar/` that includes a **Node Affinity rul
 
 ```text
 .
-├── bases/
-│   └── tie-squadron/
+├── base/
+│   └── squadron/
 │       ├── deployment.yaml
 │       ├── service.yaml
 │       └── kustomization.yaml
@@ -115,14 +109,11 @@ Create an additional overlay for `mustafar/` that includes a **Node Affinity rul
 │   ├── production/
 │   │   ├── patch.yaml
 │   │   └── kustomization.yaml
-│   └── mustafar/
-│       ├── affinity-patch.yaml
-│       └── kustomization.yaml
 ```
 
 ---
 
 ## 💡 Learn More
 
-* [Kustomize Official Docs](https://kubectl.docs.kubernetes.io/pages/app_management/introduction.html)
-* [Imperial Field Manual – Kubernetes Patching](https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/)
+* [Declarative Management of Kubernetes Objects Using Kustomize](https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/)
+* [Docs](https://kubectl.docs.kubernetes.io/)
