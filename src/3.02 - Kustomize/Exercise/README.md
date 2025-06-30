@@ -31,7 +31,7 @@ As a systems officer in DevOps Command, your mission is to:
 Inside `base/squadron/`, define the **deployment** and **service** manifests. Then create a `kustomization.yaml` to include them both.
 
 ```yaml
-# bases/tie-squadron/kustomization.yaml
+# base/squadron/kustomization.yaml
 resources:
   - squadron.yaml
   - service.yaml
@@ -49,7 +49,7 @@ Inside `overlays/staging/`, create:
 ```yaml
 # overlays/staging/kustomization.yaml
 bases:
-- ../../bases/tie-squadron
+- ../../base
 patches:
 - patch.yaml
 ```
@@ -59,7 +59,7 @@ patches:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: tie-squadron
+  name: squadron
 spec:
   replicas: 1
   template:
@@ -67,7 +67,7 @@ spec:
       containers:
       - name: tie-fighter
         resources:
-          limits:
+          requests:
             cpu: "200m"
             memory: "128Mi"
 ```
@@ -76,7 +76,7 @@ spec:
 
 ### 3. 🛰️ Create the Production Overlay
 
-Do the same under `overlays/production/` but bump `replicas` to 5 and increase limits.
+Do the same under `overlays/production/` but bump `replicas` to 5 and increase requests.
 
 ---
 
@@ -97,18 +97,18 @@ Use `kubectl get deployment squadron` to confirm the correct `replicas` and conf
 
 ```text
 .
-├── base/
-│   └── squadron/
+├── tie-squadron/
+│   └── base/
 │       ├── deployment.yaml
 │       ├── service.yaml
 │       └── kustomization.yaml
-├── overlays/
-│   ├── staging/
-│   │   ├── patch.yaml
-│   │   └── kustomization.yaml
-│   ├── production/
-│   │   ├── patch.yaml
-│   │   └── kustomization.yaml
+|   └── overlays/
+│       └── dev/
+│           ├── patch.yaml
+│           └── kustomization.yaml
+│       └── acc/
+│           ├── patch.yaml
+│           └── kustomization.yaml
 ```
 
 ---
