@@ -6,7 +6,7 @@ With the Empire’s infrastructure spanning thousands of systems, manual deploym
 
 Helm provides standardization and reusability, much like the stormtrooper armor—modular, battle-tested, and easy to replicate.
 
-> *“You may fire when ready… just make sure you installed it with the correct values.”* – Grand Moff Tarkin
+> _“You may fire when ready… just make sure you installed it with the correct values.”_ – Grand Moff Tarkin
 
 ---
 
@@ -14,16 +14,16 @@ Helm provides standardization and reusability, much like the stormtrooper armor�
 
 You will:
 
-* Deploy an application using a public Helm chart
-* Inspect installed Helm releases and their configuration
-* Uninstall and clean up Helm deployments
-* Re-deploy the chart with a custom `values.yaml`
+- Deploy an application using a public Helm chart
+- Inspect installed Helm releases and their configuration
+- Uninstall and clean up Helm deployments
+- Re-deploy the chart with a custom `values.yaml`
 
 ---
 
 ## 🧭 Step-by-step: Helm in the service of the Empire
 
-01. Ensure Helm Is Installed
+1.  Ensure Helm Is Installed
 
 Verify that Helm is installed:
 
@@ -33,29 +33,29 @@ helm version
 
 If not, install Helm following the [official guide](https://helm.sh/docs/intro/install/).
 
-02. Add a Helm Repository
+2.  Add a Helm Repository
 
 Add the Bitnami Helm repo (or another public repo)
 
-03. Install a Helm Chart
+3.  Install a Helm Chart
 
 Install NGINX from Bitnami
 
-04. Inspect Helm Releases
+4.  Inspect Helm Releases
 
-* List installed Helm releases
+- List installed Helm releases
 
-* Check the values used
+- Check the values used
 
-* Optional: View all resources deployed by Helm
+- Optional: View all resources deployed by Helm
 
-05. Uninstall the Release
+5.  Uninstall the Release
 
-* Clean up the deployment
+- Clean up the deployment
 
-* Confirm the resources are removed
+- Confirm the resources are removed
 
-06. Deploy with Custom Imperial Configuration
+6.  Deploy with Custom Imperial Configuration
 
 Now deploy NGINX with a custom `values.yaml`—because the Empire requires tailored deployments.
 
@@ -86,19 +86,19 @@ Install the chart with custom values.
 
 ### 07. Verify Custom Configuration
 
-* Ensure the service type is `LoadBalancer` and uses port `8080`:
+- Ensure the service type is `LoadBalancer` and uses port `8080`:
 
   ```bash
   kubectl get svc nginx
   ```
 
-* Confirm 3 pods are running:
+- Confirm 3 pods are running:
 
   ```bash
   kubectl get pods -l app.kubernetes.io/instance=nginx
   ```
 
-* Check resource requests and limits:
+- Check resource requests and limits:
 
   ```bash
   kubectl describe pod <nginx-pod-name>
@@ -108,4 +108,6 @@ Install the chart with custom values.
 
 ## 📚 Resources
 
-* [Helm Commands](https://helm.sh/docs/helm/)
+- [Helm Commands](https://helm.sh/docs/helm/)
+- [Helm Cheatsheet](https://helm.sh/docs/intro/cheatsheet/)
+- [Bitnami Charts](https://charts.bitnami.com/)

@@ -6,7 +6,7 @@ The Empire’s GitOps deployment pipeline spans countless star systems. However,
 
 Your assignment: define a secure, declarative **ArgoCD Project** that enforces **namespace boundaries**, **source restrictions**, and **cluster-scoped controls** for the `tie-squadron`.
 
-> *“The TIE units must remain in their designated airspace. No more friendly fire deployments.”* – Admiral Piett
+> _“The TIE units must remain in their designated airspace. No more friendly fire deployments.”_ – Admiral Piett
 
 ---
 
@@ -14,45 +14,45 @@ Your assignment: define a secure, declarative **ArgoCD Project** that enforces *
 
 You will:
 
-* Create an **ArgoCD Project** declaratively using a YAML manifest
-* Restrict allowed **destination clusters** and **namespaces**
-* Limit allowed **Git repositories** to the current GitOps-repository
-* Limit the **sync windows** from `5PM to 9AM`
+- Create an **ArgoCD Project** declaratively using a YAML manifest
+- Restrict allowed **destination clusters** and **namespaces**
+- Limit allowed **Git repositories** to the current GitOps-repository
+- Limit the **sync windows** from `5PM to 9AM`
 
 ---
 
 ## 🛠️ Step-by-step: creating an ArgoCD Repository
 
-01. Define the ArgoCD Project
+1.  Define the ArgoCD Project
 
-02. Apply the Project to ArgoCD
+2.  Apply the Project to ArgoCD
 
-03. **Edit your Deployment manifest** in your GitOps repository.
-   For example, in your app’s `deployment.yaml`, change the Deployment `name`:
+3.  **Edit your Deployment manifest** in your GitOps repository.
+    For example, in your app’s `deployment.yaml`, change the Deployment `name`:
 
-   ```yaml
-   metadata:
-     name: tie-squadron-app
-   ```
+```yaml
+metadata:
+  name: tie-squadron-app
+```
 
-   to:
+to:
 
-   ```yaml
-   metadata:
-     name: tie-squadron-app-v2
-   ```
+```yaml
+metadata:
+  name: tie-squadron-app-v2
+```
 
-04. **Commit and push** the change to your GitOps repo:
+4.  **Commit and push** the change to your GitOps repo:
 
-   ```bash
-   git add .
-   git commit -m "Rename deployment to tie-squadron-app-v2"
-   git push origin main
-   ```
+```bash
+git add .
+git commit -m "Rename deployment to tie-squadron-app-v2"
+git push origin main
+```
 
-05. **Open the ArgoCD UI**, locate the corresponding application, and click **"Sync"** manually.
+5.  **Open the ArgoCD UI**, locate the corresponding application, and click **"Sync"** manually.
 
-06. **Observe the results**:
+6.  **Observe the results**:
 
-   * Confirm ArgoCD detects the new Deployment name
-   * Watch the app sync and apply the change in-cluster
+- Confirm ArgoCD detects the new Deployment name
+- Watch the app sync and apply the change in-cluster
