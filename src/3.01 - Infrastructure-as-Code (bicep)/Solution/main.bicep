@@ -7,6 +7,7 @@ param location string
 param tags object
 
 // MARK: AKS Parameters
+param aksResourceGroupName string
 param clusterName string
 param systemNodeVmSize string
 param userNodeVmSize string
@@ -34,9 +35,8 @@ param skuName string
 param roleAssignment object
 
 // MARK: Variables
-var aksResourceGroupName = 'rg-deathstar-aks-midsector'
-var keyVaultResourceGroupName = 'rg-deathstar-archive-midsector'
-var keyVaultName = 'kv-deathstar-mvh'
+param keyVaultResourceGroupName string
+param keyVaultName string
 
 // MARK: Resources
 // MARK: AKS Resources

@@ -7,7 +7,7 @@ param location string
 param tags object
 
 // MARK: AKS Parameters
-param resourceGroupAksName string
+param aksResourceGroupName string
 param clusterName string
 param systemNodeVmSize string
 param userNodeVmSize string
@@ -20,7 +20,7 @@ param podCidr string
 
 // MARK: Resources
 resource resourceGroupAks 'Microsoft.Resources/resourceGroups@2025-04-01' = {
-  name: resourceGroupAksName
+  name: aksResourceGroupName
   location: location
   tags: tags
 }

@@ -11,6 +11,7 @@ param tags = {
 }
 
 // MARK: AKS Parameters
+param aksResourceGroupName = 'rg-deathstar-aks-midsector'
 param clusterName = 'aks-imperial-outpost'
 param systemNodeVmSize = 'Standard_D4ads_v6'
 param userNodeVmSize = 'Standard_D4ads_v6'
@@ -27,6 +28,8 @@ param federatedCredentialName = 'external-secrets'
 param subject = 'system:serviceaccount:external-secrets:sa-external-secrets'
 
 // MARK: Key Vault
+param keyVaultResourceGroupName = 'rg-deathstar-archive-midsector'
+param keyVaultName = 'kv-deathstar-mvh'
 param skuName = 'standard'
 param roleAssignment = {
   principalId: '3c38f345-972c-41c7-8b56-d345d6a5d10b' // Your Azure AD User Object ID
