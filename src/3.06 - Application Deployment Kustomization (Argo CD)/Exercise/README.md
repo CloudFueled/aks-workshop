@@ -72,7 +72,3 @@ spec:
 ## 📚 Resources
 
 - [Argo CD Application](https://argo-cd.readthedocs.io/en/latest/user-guide/application-specification/)
-
-```
-
-```
