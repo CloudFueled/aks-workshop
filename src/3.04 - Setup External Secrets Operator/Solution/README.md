@@ -6,7 +6,7 @@ The Empire’s DevOps command now mandates all mission-critical credentials—su
 
 To enforce this, we’ll use the **External Secrets Operator**, **Workload Identity Federation**, and **ArgoCD integration** to automatically and securely sync your DevOps tokens into your Kubernetes cluster.
 
-> *"Secrets are the currency of control. Let them flow only through sanctioned channels."* – Moff Gideon, Cybersecurity Division
+> _"Secrets are the currency of control. Let them flow only through sanctioned channels."_ – Moff Gideon, Cybersecurity Division
 
 ---
 
@@ -33,8 +33,8 @@ You will:
 
 1. Generate a PAT from [Azure DevOps](https://dev.azure.com/):
 
-   * Scope: **Code (Read)**
-   * Expiry: 30–90 days (for demo purposes)
+   - Scope: **Code (Read)** and **Service Connections (Read/Write)**
+   - Expiry: 30–90 days (for demo purposes)
 
 2. Store the PAT in Azure Key Vault:
 
@@ -47,29 +47,27 @@ az keyvault secret set \
 
 ---
 
-### ⚙️ Phase II: deploy External Secrets Operator
-
-Install ESO using Helm:
-
-```bash
-helm repo add external-secrets https://charts.external-secrets.io
-
-helm install external-secrets external-secrets/external-secrets \
-  -n external-secrets \
-  --create-namespace \
-  --set-string serviceAccount.annotations."azure\.workload\.identity/client-id"="2802047a-44e1-47f6-94c3-3303202941be" \
-  --set-string serviceAccount.annotations."azure\.workload\.identity/use"="true"
-```
-
----
-
-### ⚙️ Phase III: provision Azure resources with Bicep
+### ⚙️ Phase II: provision Azure resources with Bicep
 
 Use a Bicep template to:
 
-* Create a **User Assigned Managed Identity (UAMI)**
-* Assign it **Key Vault Secrets User** role scoped to the vault
-* Set up the **federated identity credential** on the UAMI
+- Define a **User Assigned Managed Identity** module in the modules folder:
+
+  - Use the `Microsoft.ManagedIdentity/userAssignedIdentities@2025-01-31-preview` API version
+  - Set the `location` to the same as the AKS cluster
+  - Use a unique name for the identity
+  - Create a federated credential with the following specifications:
+
+    - audience: `api://AzureADTokenExchange`
+    - issuer: the oidcIssuerURL from the AKS cluster
+    - subject: `system:serviceaccount:external-secrets:sa-external-secrets`
+
+
+- Assign it **Key Vault Secrets User** role scoped to the vault
+- Set up the **federated identity credential** on the UAMI
+- Define and deploy an **User Managed Identity** with the created module.
+- Assign the Managed Identity to the Key Vault with the `Key Vault Administrator` role
+- Make sure the tags are propagated to all resources, including the Key Vault and Managed Identity.
 
 Deploy:
 
@@ -83,9 +81,29 @@ az deployment sub create \
 
 ---
 
+### ⚙️ Phase III: deploy External Secrets Operator
+
+Install ESO using Helm.
+Replace the `client-id` with your UAMI's client ID.
+
+```bash
+helm repo add external-secrets https://charts.external-secrets.io
+
+helm install external-secrets external-secrets/external-secrets \
+  -n external-secrets \
+  --create-namespace \
+  --set-string serviceAccount.annotations."azure\.workload\.identity/client-id"="2802047a-44e1-47f6-94c3-3303202941be" \
+  --set-string serviceAccount.annotations."azure\.workload\.identity/use"="true" \
+  --set-string "serviceAccount.name"="sa-external-secrets"
+```
+
+---
+
 ### ⚙️ Phase IV: create a ClusterSecretStore
 
 Define a `ClusterSecretStore` to connect to Azure Key Vault using the UAMI via workload identity.
+
+The name of the ClusterSecretStore should be **azure-kv**
 
 ---
 
@@ -151,10 +169,6 @@ spec:
 
 ## 📚 Resources
 
-* [Use personal access tokens](https://learn.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops&tabs=Windows)
-
-* [ClusterSecretStore](https://external-secrets.io/latest/api/clustersecretstore/)
-
-* [ClusterExternalSecret](https://external-secrets.io/latest/api/clusterexternalsecret/)
-
-* [Repository Credential](https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#repository-credentials)
+- [ClusterSecretStore](https://external-secrets.io/latest/api/clustersecretstore/)
+- [ClusterExternalSecret](https://external-secrets.io/latest/api/clusterexternalsecret/)
+- [Repository Credential](https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#repository-credentials)

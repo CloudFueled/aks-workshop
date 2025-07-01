@@ -47,24 +47,7 @@ az keyvault secret set \
 
 ---
 
-### ⚙️ Phase II: deploy External Secrets Operator
-
-Install ESO using Helm.
-Replace the `client-id` with your UAMI's client ID.
-
-```bash
-helm repo add external-secrets https://charts.external-secrets.io
-
-helm install external-secrets external-secrets/external-secrets \
-  -n external-secrets \
-  --create-namespace \
-  --set-string serviceAccount.annotations."azure\.workload\.identity/client-id"="2802047a-44e1-47f6-94c3-3303202941be" \
-  --set-string serviceAccount.annotations."azure\.workload\.identity/use"="true"
-```
-
----
-
-### ⚙️ Phase III: provision Azure resources with Bicep
+### ⚙️ Phase II: provision Azure resources with Bicep
 
 Use a Bicep template to:
 
@@ -94,6 +77,23 @@ az deployment sub create \
   --template-file main.bicep \
   --name aks-imperial-outpost \
   --parameters params/midSector.bicepparam
+```
+
+---
+
+### ⚙️ Phase III: deploy External Secrets Operator
+
+Install ESO using Helm.
+Replace the `client-id` with your UAMI's client ID.
+
+```bash
+helm repo add external-secrets https://charts.external-secrets.io
+
+helm install external-secrets external-secrets/external-secrets \
+  -n external-secrets \
+  --create-namespace \
+  --set-string serviceAccount.annotations."azure\.workload\.identity/client-id"="2802047a-44e1-47f6-94c3-3303202941be" \
+  --set-string serviceAccount.annotations."azure\.workload\.identity/use"="true"
 ```
 
 ---
