@@ -18,8 +18,8 @@ spec:
       type: Opaque
       data:
         type: git
-        url: https://cloudfuelbe@dev.azure.com/cloudfuelbe/Research%20and%20development/_git/xerius-labs-gitops
-        username: vanherm@cronos.be
+        url: <repo-url> # https://dev.azure.com/imperial/DeathStar/_git/DeathStar
+        username: <username> # Darth Vader
         password: "{{ .pat }}"
 
   data:

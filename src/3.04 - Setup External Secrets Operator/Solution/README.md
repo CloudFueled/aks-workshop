@@ -103,7 +103,7 @@ helm install external-secrets external-secrets/external-secrets \
 
 Define a `ClusterSecretStore` to connect to Azure Key Vault using the UAMI via workload identity.
 
-The name of the ClusterSecretStore should be **azure-kv**
+The name of the ClusterSecretStore should be **imperial-secure-archive**
 
 ---
 
@@ -143,7 +143,7 @@ metadata:
   namespace: argocd
 spec:
   secretStoreRef:
-    name: azure-kv
+    name: imperial-secure-archive
     kind: ClusterSecretStore
   target:
     name: azdo-repo

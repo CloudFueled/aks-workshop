@@ -93,7 +93,8 @@ helm install external-secrets external-secrets/external-secrets \
   -n external-secrets \
   --create-namespace \
   --set-string serviceAccount.annotations."azure\.workload\.identity/client-id"="2802047a-44e1-47f6-94c3-3303202941be" \
-  --set-string serviceAccount.annotations."azure\.workload\.identity/use"="true"
+  --set-string serviceAccount.annotations."azure\.workload\.identity/use"="true" \
+  --set-string "serviceAccount.name"="sa-external-secrets"
 ```
 
 ---
@@ -101,6 +102,8 @@ helm install external-secrets external-secrets/external-secrets \
 ### ⚙️ Phase IV: create a ClusterSecretStore
 
 Define a `ClusterSecretStore` to connect to Azure Key Vault using the UAMI via workload identity.
+
+The name of the ClusterSecretStore should be **imperial-secure-archive**
 
 ---
 
@@ -140,7 +143,7 @@ metadata:
   namespace: argocd
 spec:
   secretStoreRef:
-    name: azure-kv
+    name: imperial-secure-archive
     kind: ClusterSecretStore
   target:
     name: azdo-repo
@@ -167,7 +170,5 @@ spec:
 ## 📚 Resources
 
 - [ClusterSecretStore](https://external-secrets.io/latest/api/clustersecretstore/)
-
 - [ClusterExternalSecret](https://external-secrets.io/latest/api/clusterexternalsecret/)
-
 - [Repository Credential](https://argo-cd.readthedocs.io/en/stable/operator-manual/declarative-setup/#repository-credentials)
