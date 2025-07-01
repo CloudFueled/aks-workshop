@@ -52,7 +52,7 @@ Locate the `main.bicep` file and complete the following TODOs:
   - Use the same location as the AKS cluster
 
 - Define and deploy an **User Managed Identity** with the created module.
-- Define and deploy a **Key Vault** with the modified module.
+- Define and deploy a **Key Vault** with the modified module. The **name** of the Key Vault **should be unique**.
 - Assign the Managed Identity to the Key Vault with the `Key Vault Administrator` role
 - Assign yourself to the Key Vault with the `Key Vault Administrator` role
 - Make sure the tags are propagated to all resources, including the Key Vault and Managed Identity.
