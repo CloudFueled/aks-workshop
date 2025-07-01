@@ -29,19 +29,18 @@ You will:
 
 ## 🛠️ Step-by-step: enabling GitOps for the Empire
 
-01. Prepare Your Git repository structure
+01. Prepare Your GitOps repository structure
 
 ```
 clusters/
 └── dta/
     └── apps/
         └── imperial-fleet/
-            ├── projects/
-            │   └── tie-squadron-project.yaml       # ArgoCD Project manifest
             ├── applications/
             │   └── application.yaml                # ArgoCD Application manifest
             └── tie-squadron/
                 ├── base/
+                │   ├── kustomization.yaml
                 │   ├── squadron.yaml
                 │   ├── service.yaml
                 │   ├── tie-systems-configmap.yaml
@@ -60,6 +59,20 @@ clusters/
 ---
 
 02. Create the ArgoCD Application manifest
+```yaml
+# clusters/dta/imperial-fleet/application.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: squadron
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: "https://dev.azure.com/<org-name>/aks-workshop"
+    path: clusters/dta/imperial-fleet/manifests
+    targetRevision: HEAD
+```
 
 03. Apply the Application to ArgoCD
 

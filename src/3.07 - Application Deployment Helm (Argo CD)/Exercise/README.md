@@ -32,8 +32,6 @@ clusters/
 └── dta/
     └── apps/
         └── rebel-fleet/
-            ├── projects/
-            │   └── x-wing-project.yaml              # ArgoCD Project manifest
             ├── applications/
             │   └── application.yaml                 # ArgoCD Application manifest
             └── x-wing/
