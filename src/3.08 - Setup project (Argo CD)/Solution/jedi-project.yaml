@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: jedi-project
+  namespace: argocd
+spec:
+  description: GitOps project for the Jedi deployments
+  sourceRepos:
+    - https://github.com/empire/gitops-repo.git
+  destinations:
+    - namespace: jedi-fleet
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
+  syncWindows:
+    - kind: allow
+      schedule: "0 20 * * *" # 8PM
+      duration: 12h
+      timeZone: UTC
