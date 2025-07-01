@@ -1,19 +1,26 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: squadron
+  name: x-wing
   namespace: argocd
   labels:
-    app: squadron
+    app: x-wing
 spec:
   project: default
   destination:
-    namespace: empire-outpost-1
+    namespace: jedi-outpost-1
     server: https://kubernetes.default.svc
   sources:
+    - repoURL: https://charts.bitnami.com/bitnami
+      chart: nginx
+      targetRevision: 21.0.3
+      helm:
+        valueFiles:
+        - $values/clusters/dta/apps/rebel-fleet/x-wing/values.yaml
+
     - repoURL: 'https://cloudfuelbe@dev.azure.com/cloudfuelbe/Research%20and%20development/_git/xerius-labs-gitops'
-      path: 'clusters/dta/apps/imperial-fleet/tie-squadron'
       targetRevision: HEAD
+      ref: values
   syncPolicy:
     automated:
       allowEmpty: true

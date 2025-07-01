@@ -29,7 +29,7 @@ You will:
 
 ## 🛠️ Step-by-step: enabling GitOps for the Empire
 
-01. Prepare Your Git repository structure
+01. Prepare Your GitOps repository structure
 
 ```
 clusters/
