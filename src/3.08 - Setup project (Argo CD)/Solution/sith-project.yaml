@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: sith-project
+  namespace: argocd
+spec:
+  description: GitOps project for the Sith deployments
+  sourceRepos:
+    - https://github.com/empire/gitops-repo.git
+  destinations:
+    - namespace: empire-outpost-1
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
+  syncWindows:
+    - kind: allow
+      schedule: "0 8 * * *" # 8AM
+      duration: 12h
+      timeZone: UTC

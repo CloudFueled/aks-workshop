@@ -1,12 +1,14 @@
-# 🧭 Lab 3.07 - ArgoCD Project – securing the Fleet with boundaries
+# 🧭 Lab 3.08 – ArgoCD Projects: Jedi vs. Sith sector isolation
 
-### **Imperial GitOps Protocol – sector isolation directive**
+### **Imperial GitOps protocol – dual-faction enforcement**
 
-The Empire’s GitOps deployment pipeline spans countless star systems. However, without proper segmentation, a single misconfigured application could override another fleet's deployment. To prevent this, the **DevOps Command** has mandated that each unit operates within an isolated **ArgoCD Project**.
+The Force must remain in balance — even within GitOps.
 
-Your assignment: define a secure, declarative **ArgoCD Project** that enforces **namespace boundaries**, **source restrictions**, and **cluster-scoped controls** for the `tie-squadron`.
+With star systems aligned to either the Jedi Council or the Sith Order, a new protocol has been enacted to **segregate deployments** using **ArgoCD Projects**. This ensures each faction maintains autonomy, security, and operational integrity within their own galactic domains.
 
-> *“The TIE units must remain in their designated airspace. No more friendly fire deployments.”* – Admiral Piett
+> *“A Jedi does not deploy into Sith territory... unless he's debugging.”* – Master Windu
+
+> *“You control deployments by controlling the Project. That is the way of the Sith.”* – Darth Sidious
 
 ---
 
@@ -14,45 +16,68 @@ Your assignment: define a secure, declarative **ArgoCD Project** that enforces *
 
 You will:
 
-* Create an **ArgoCD Project** declaratively using a YAML manifest
-* Restrict allowed **destination clusters** and **namespaces**
-* Limit allowed **Git repositories** to the current GitOps-repository
-* Limit the **sync windows** from `5PM to 9AM`
+* Create **two ArgoCD Projects**: `jedi-project` and `sith-project`
+* Define **source and destination boundaries** per project
+* Limit **sync windows** for both
+* Update the **ArgoCD Application manifests** from:
+
+  * **Lab 3.06** (e.g. `x-wing-fleet`) to use `jedi-project`
+  * **Lab 3.07** (e.g. `tie-squadron`) to use `sith-project`
 
 ---
 
-## 🛠️ Step-by-step: creating an ArgoCD Repository
+## 🛠️ Step-by-step: Defining the Projects
 
-01. Define the ArgoCD Project
+1. Create `jedi-project`
 
-02. Apply the Project to ArgoCD
+```yaml
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: jedi-project
+  namespace: argocd
+spec:
+  description: GitOps project for the Jedi deployments
+  sourceRepos:
+    - https://github.com/empire/gitops-repo.git
+  destinations:
+    - namespace: jedi-fleet
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
+  syncWindows:
+    - kind: allow
+      schedule: "0 20 * * *" # 8PM
+      duration: 12h
+      timeZone: UTC
+```
 
-03. **Edit your Deployment manifest** in your GitOps repository.
-   For example, in your app’s `deployment.yaml`, change the Deployment `name`:
+---
 
-   ```yaml
-   metadata:
-     name: tie-squadron-app
-   ```
+2. Create `sith-project` using the following specs:
 
-   to:
+- name: sith-project
+- destination namespace: empire-outpost-1
+- destination server: https://kubernetes.default.svc
+- the sync window schedule should start at 8AM
+- the sync window duration should be 12 hours
+- the sync window time zone should be UTC
 
-   ```yaml
-   metadata:
-     name: tie-squadron-app-v2
-   ```
+3. Apply Both Projects
 
-04. **Commit and push** the change to your GitOps repo:
+4. Update Application from **Lab 3.07** (Jedi) to be part of the jedi-project
 
-   ```bash
-   git add .
-   git commit -m "Rename deployment to tie-squadron-app-v2"
-   git push origin main
-   ```
+5. Update Application from **Lab 3.06** (Sith) to be part of the sith-project
 
-05. **Open the ArgoCD UI**, locate the corresponding application, and click **"Sync"** manually.
+6. Update the image tag from the deployment in the squadron `Deployment` to 1.28.0
 
-06. **Observe the results**:
+---
 
-   * Confirm ArgoCD detects the new Deployment name
-   * Watch the app sync and apply the change in-cluster
+7. Push Changes and Validate
+
+Then in the **ArgoCD UI**:
+
+* Confirm each app is assigned to the correct project
+* Try syncing during and outside of the allowed window
+* Observe access violations if misaligned with namespace/project rules
