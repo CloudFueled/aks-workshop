@@ -69,7 +69,7 @@ az deployment sub create \
 
 ```bash
 az aks show \
-  --resource-group rg-imperial-outpost-aks \
+  --resource-group rg-deathstar-aks-midsector \
   --name aks-imperial-outpost \
   --query networkProfile.advancedNetworking.security
 ```
@@ -83,7 +83,7 @@ You should see:
 
 ```bash
 az aks get-credentials \
-  --resource-group rg-imperial-outpost-aks \
+  --resource-group rg-deathstar-aks-midsector \
   --name aks-imperial-outpost
 ```
 
