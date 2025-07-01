@@ -9,6 +9,12 @@ But something’s wrong—your service isn't responding, and no traffic seems to
 ## 🧭 Step-by-step
 
 1. Apply the Manifests
+
+```bash
+kubectl apply -f deployment.yaml
+kubectl apply -f service.yaml
+```
+
 2. Verify the Service Is Routing Traffic
 3. Troubleshoot
 

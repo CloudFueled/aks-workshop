@@ -9,6 +9,11 @@ You're deploying a PostgreSQL database using a Deployment and a PersistentVolume
 ## 🧭 Step-by-step
 
 1. Apply the Manifests
+```bash
+kubectl apply -f pvc.yaml
+kubectl apply -f deployment.yaml
+```
+
 2. Observe Pod Behavior
 3. Troubleshoot the PVC and Volume Binding
 

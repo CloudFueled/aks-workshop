@@ -10,6 +10,11 @@ You must **debug the ExternalSecret** setup and identify the problems.
 ## 🧭 Step-by-step
 
 1. Apply the Manifests
+```bash
+kubectl apply -f pvc.yaml
+kubectl apply -f deployment.yaml
+```
+
 2. Verify the Service Is Routing Traffic
 3. Troubleshoot
 

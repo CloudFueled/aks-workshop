@@ -8,10 +8,16 @@ You’re deploying a secure application that needs access to sensitive data thro
 
 ## 🧭 Step-by-step
 
-1. Create the `secure-app` namespace
-2. Apply all manifests in the scenario directory
-3. Check pod status and logs
-4. Investigate why the application can't access secrets
+1. Apply all manifests in the scenario directory
+```bash
+kubectl apply -f namespace.yaml
+kubectl apply -f service-account.yaml
+kubectl apply -f secret.yaml
+kubectl apply -f deployment.yaml
+```
+
+2. Check pod status and logs
+3. Investigate why the application can't access secrets
 
 ---
 

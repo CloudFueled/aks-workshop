@@ -10,6 +10,10 @@ You must **debug the ExternalSecret** setup and identify the problems.
 ## 🧭 Step-by-step
 
 1. Apply the Manifests
+```bash
+kubectl apply -f external-secret.yaml
+```
+
 2. Verify the Service Is Routing Traffic
 3. Troubleshoot
 

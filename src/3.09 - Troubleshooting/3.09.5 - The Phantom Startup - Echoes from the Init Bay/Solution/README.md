@@ -9,6 +9,12 @@ You’re deploying a multi-container pod with init containers designed to prepar
 ## 🧭 Step-by-step
 
 1. Apply all manifests under the scenario directory
+```bash
+kubectl apply -f configmap.yaml
+kubectl apply -f database.yaml
+kubectl apply -f deployment.yaml
+```
+
 2. Observe pod status and container logs
 3. Investigate init container and sidecar behaviors
 4. Troubleshoot volume mounts, file dependencies, and container readiness
