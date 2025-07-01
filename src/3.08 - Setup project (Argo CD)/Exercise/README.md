@@ -18,7 +18,7 @@ You will:
 
 * Create **two ArgoCD Projects**: `jedi-project` and `sith-project`
 * Define **source and destination boundaries** per project
-* Limit **sync windows** from `5PM to 9AM` for both
+* Limit **sync windows** for both
 * Update the **ArgoCD Application manifests** from:
 
   * **Lab 3.06** (e.g. `x-wing-fleet`) to use `jedi-project`
@@ -31,7 +31,6 @@ You will:
 1. Create `jedi-project`
 
 ```yaml
-# argocd/projects/jedi-project.yaml
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
@@ -56,33 +55,14 @@ spec:
 
 ---
 
-2. Create `sith-project`
+2. Create `sith-project` using the following specs:
 
-```yaml
-# argocd/projects/sith-project.yaml
-apiVersion: argoproj.io/v1alpha1
-kind: AppProject
-metadata:
-  name: sith-project
-  namespace: argocd
-spec:
-  description: GitOps project for the Sith deployments
-  sourceRepos:
-    - https://github.com/empire/gitops-repo.git
-  destinations:
-    - namespace: sith-fleet
-      server: https://kubernetes.default.svc
-  clusterResourceWhitelist:
-    - group: '*'
-      kind: '*'
-  syncWindows:
-    - kind: allow
-      schedule: "0 8 * * *" # 8AM
-      duration: 12h
-      timeZone: UTC
-```
-
----
+- name: sith-project
+- destination namespace: empire-outpost-1
+- destination server: https://kubernetes.default.svc
+- the sync window schedule should start at 8AM
+- the sync window duration should be 12 hours
+- the sync window time zone should be UTC
 
 3. Apply Both Projects
 
