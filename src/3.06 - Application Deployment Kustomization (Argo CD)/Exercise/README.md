@@ -34,7 +34,7 @@ You will:
 
 ```
 clusters/
-└── dev/
+└── dta/
     └── imperial-fleet/
         └── manifests/
             ├── squadron.yaml
@@ -50,19 +50,24 @@ clusters/
 
 2. Create the ArgoCD Application manifest:
 
+- Make sure the manifests are being deployed in the `empire-outpost-1` **namespace**
+- Make sure the server is set to `https://kubernetes.default.svc`
+- Set the syncPolicy options to ApplyOutOfSyncOnly=true, ServerSideApply=true and CreateNamespace=true
+- Set allowEmpty, prune and selfHeal to true
+
 ```yaml
 # clusters/dta/imperial-fleet/application.yaml
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: imperial-fleet
+  name: squadron
   namespace: argocd
 spec:
   project: default
   source:
     repoURL: "https://dev.azure.com/<org-name>/aks-workshop"
+    path: clusters/dta/imperial-fleet/manifests
     targetRevision: HEAD
-    path: clusters/dta/imperial-fleet/
 ```
 
 3. Apply the Application to ArgoCD
