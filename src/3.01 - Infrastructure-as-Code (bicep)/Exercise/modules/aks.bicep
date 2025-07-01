@@ -76,6 +76,7 @@ resource userNodePool 'Microsoft.ContainerService/managedClusters/agentPools@202
     osDiskType: 'Ephemeral'
     osDiskSizeGB: osDiskSizeGB
     type: 'VirtualMachineScaleSets'
+    tags: tags
   }
 }
 

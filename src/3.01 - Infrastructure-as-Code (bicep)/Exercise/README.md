@@ -42,7 +42,6 @@ You will:
   - Add a roleAssignments parameter to the Key Vault module
   - Add a resource roleAssignment that loops over the entries in the roleAssignments parameter
 
-
 2.  Review and Extend the `main.bicep`
 
 Locate the `main.bicep` file and complete the following TODOs:
@@ -103,8 +102,8 @@ You should see:
 
 ```bash
 az aks get-credentials \
-  --resource-group <Resource Group Name> \
-  --name <Cluster Name> 
+  --resource-group rg-imperial-outpost-aks \
+  --name aks-imperial-outpost
 ```
 
 6. Manually add a Key Vault secret in the newly created Key Vault

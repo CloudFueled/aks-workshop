@@ -49,7 +49,8 @@ az keyvault secret set \
 
 ### ⚙️ Phase II: deploy External Secrets Operator
 
-Install ESO using Helm:
+Install ESO using Helm.
+Replace the `client-id` with your UAMI's client ID.
 
 ```bash
 helm repo add external-secrets https://charts.external-secrets.io

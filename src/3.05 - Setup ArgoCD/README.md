@@ -6,7 +6,7 @@ With the Imperial Starfleet growing at an unprecedented pace, managing deploymen
 
 This mission introduces the **Argo CD control relay**, which will serve as the Empire’s **GitOps Command Center**, enabling automated fleet rollouts, version tracking, and mission synchronization across clusters in the Outer Rim and beyond.
 
-> *"Let the fleet deploy itself. Your job is to command, not babysit pods."* – Director Orson Krennic
+> _"Let the fleet deploy itself. Your job is to command, not babysit pods."_ – Director Orson Krennic
 
 ---
 
@@ -30,7 +30,9 @@ You must:
 Run the following Helm command to deploy Argo CD:
 
 ```bash
-helm install argocd argocd/argo-cd \
+helm repo add argo-cd https://argoproj.github.io/argo-helm
+helm repo update
+helm install argocd argo-cd/argo-cd \
   --version ^7.0.0 \
   --namespace argocd \
   --create-namespace \
@@ -39,10 +41,10 @@ helm install argocd argocd/argo-cd \
 
 This command does the following:
 
-* Deploys Argo CD under the namespace `argocd`
-* Ensures it can schedule on **system-reserved** nodes
-* Applies a toleration for critical workloads
-* Enables the **insecure server mode** for simplified access in this lab environment
+- Deploys Argo CD under the namespace `argocd`
+- Ensures it can schedule on **system-reserved** nodes
+- Applies a toleration for critical workloads
+- Enables the **insecure server mode** for simplified access in this lab environment
 
 ---
 
@@ -57,10 +59,11 @@ kubectl get pods -n argocd
 2. Port-forward the Argo CD API server:
 
 ```bash
-kubectl port-forward svc/argocd-server -n argocd 8080:80
+kubectl port-forward svc/argocd-server -n argocd 8080:443
 ```
 
 3. Fetch the admin password
+
 ```bash
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
 ```
@@ -73,6 +76,6 @@ kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.pas
 
 ## 📚 Resources
 
-* [Argo CD Installation (Helm)](https://argo-cd.readthedocs.io/en/stable/operator-manual/installation/)
+- [Argo CD Installation (Helm)](https://argo-cd.readthedocs.io/en/stable/operator-manual/installation/)
 
-* [GitOps with Argo CD](https://argo-cd.readthedocs.io/en/stable/)
+- [GitOps with Argo CD](https://argo-cd.readthedocs.io/en/stable/)
