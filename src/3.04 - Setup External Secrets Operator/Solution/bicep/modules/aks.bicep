@@ -3,16 +3,15 @@ targetScope = 'resourceGroup'
 
 // MARK: Parameters
 param clusterName string
-param systemNodeVmSize string = 'Standard_D4ads_v6'
-param userNodeVmSize string = 'Standard_D4ads_v6'
-param minCount int = 1
-param maxCount int = 5
-param systemNodeCount int = 1
-param userNodeCount int = 1
-param osDiskSizeGB int = 64
-param podCidr string = '172.16.0.0/16'
-param esoManagedIdentityName string
-param subject string
+param systemNodeVmSize string
+param userNodeVmSize string
+param minCount int
+param maxCount int
+param systemNodeCount int
+param userNodeCount int
+param osDiskSizeGB int
+param podCidr string
+param tags object
 
 // MARK: Resources
 resource aks 'Microsoft.ContainerService/managedClusters@2025-03-02-preview' = {
@@ -64,6 +63,7 @@ resource aks 'Microsoft.ContainerService/managedClusters@2025-03-02-preview' = {
       enablePrivateCluster: false
     }
   }
+  tags: tags
 }
 
 resource userNodePool 'Microsoft.ContainerService/managedClusters/agentPools@2025-03-01' = {
@@ -79,22 +79,5 @@ resource userNodePool 'Microsoft.ContainerService/managedClusters/agentPools@202
   }
 }
 
-// MARK: Managed Identity
-resource esoManagedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2025-01-31-preview' = {
-  location: resourceGroup().location
-  name: esoManagedIdentityName
-
-  resource federatedCredentials 'federatedIdentityCredentials@2025-01-31-preview' = {
-    name: 'external-secrets'
-    properties: {
-      audiences: [
-        'api://AzureADTokenExchange'
-      ]
-      issuer: aks.properties.oidcIssuerProfile.issuerURL
-      subject: subject
-    }
-  }
-}
-
 // MARK: Outputs
-output managedIdentityPrinicpalId string = esoManagedIdentity.properties.principalId
+output oidcIssuer string = aks.properties.oidcIssuerProfile.issuerURL

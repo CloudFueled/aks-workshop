@@ -22,11 +22,6 @@ param userNodeCount = 1
 param osDiskSizeGB = 64
 param podCidr = '172.16.0.0/16'
 
-// MARK: Managed Identity Parameters
-param managedIdentityName = 'id-eso-${clusterName}'
-param federatedCredentialName = 'external-secrets'
-param subject = 'system:serviceaccount:external-secrets:sa-external-secrets'
-
 // MARK: Key Vault
 param keyVaultResourceGroupName = 'rg-deathstar-archive-midsector'
 param keyVaultName = 'kv-deathstar-mvh'

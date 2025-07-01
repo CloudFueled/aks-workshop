@@ -41,8 +41,6 @@ module aks 'modules/aks.bicep' = {
   }
 }
 
-// TODO: Add User Assigned Managed Identity Module
-
 // TODO: Add Key Vault Resource Group
 
 // TODO: Add Key Vault Module

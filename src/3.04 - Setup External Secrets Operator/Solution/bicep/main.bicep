@@ -4,9 +4,24 @@ targetScope = 'subscription'
 // MARK: Parameters
 // MARK: Global Parameters
 param location string
+param tags object
 
 // MARK: AKS Parameters
+param aksResourceGroupName string
 param clusterName string
+param systemNodeVmSize string
+param userNodeVmSize string
+param minCount int
+param maxCount int
+param systemNodeCount int
+param userNodeCount int
+param osDiskSizeGB int
+param podCidr string
+
+// MARK: Managed Identity Parameters
+param managedIdentityName string
+param federatedCredentialName string
+param subject string
 
 // MARK: Key Vault Parameters
 @description('The Sku Name for the Key Vault.')
@@ -19,32 +34,16 @@ param skuName string
 @description('The Role Assignment Configuration for the Key Vault.')
 param roleAssignment object
 
-@description('The Name of the Key Vault Secret.')
-param secretName string
-
-@description('The Value of the Key Vault Secret.')
-@secure()
-param secretValue string
-
-// MARK: Managed Identity Parmeters
-@description('The subject for the federated identity credentials.')
-param subject string
-
 // MARK: Variables
-var aksResourceGroupName = 'rg-deathstar-aks-midsector'
-var keyVaultResourceGroupName = 'rg-deathstar-archive-midsector'
-var keyVaultName = 'kv-deathstar-mvh'
-var esoManagedIdentityName = 'id-eso-deathstar-midsector'
+param keyVaultResourceGroupName string
+param keyVaultName string
 
 // MARK: Resources
 // MARK: AKS Resources
 resource resourceGroupAks 'Microsoft.Resources/resourceGroups@2025-04-01' = {
   name: aksResourceGroupName
   location: location
-  tags: {
-    'Created By': 'Bicep'
-    Owner: 'Death Star Operations Inc.'
-  }
+  tags: tags
 }
 
 // MARK: AKS Cluster
@@ -52,45 +51,55 @@ module aks 'modules/aks.bicep' = {
   scope: resourceGroupAks
   params: {
     clusterName: clusterName
-    esoManagedIdentityName: esoManagedIdentityName
-    subject: subject
+    systemNodeVmSize: systemNodeVmSize
+    userNodeVmSize: userNodeVmSize
+    minCount: minCount
+    maxCount: maxCount
+    systemNodeCount: systemNodeCount
+    userNodeCount: userNodeCount
+    osDiskSizeGB: osDiskSizeGB
+    podCidr: podCidr
+    tags: tags
   }
 }
 
 // MARK: Key Vault Resources
 // MARK: Resource Group
-resource resourceGroup 'Microsoft.Resources/resourceGroups@2025-04-01' = {
+resource resourceGroupKv 'Microsoft.Resources/resourceGroups@2025-04-01' = {
   name: keyVaultResourceGroupName
   location: location
-  tags: {
-    'Created By': 'Bicep'
-    Owner: 'Death Star Operations Inc.'
+  tags: tags
+}
+
+// MARK: User Managed Identity
+module managedIdentity 'modules/managedIdentity.bicep' = {
+  name: '${managedIdentityName}-deployment'
+  scope: resourceGroupAks
+  params: {
+    location: location
+    name: managedIdentityName
+    federatedCredentialName: federatedCredentialName
+    issuer: aks.outputs.oidcIssuer
+    subject: subject
+    tags: tags
   }
 }
 
 // MARK: Key Vault
 module keyVault 'modules/keyVault.bicep' = {
-  scope: resourceGroup
+  scope: resourceGroupKv
   params: {
     location: location
-    keyVaultName: keyVaultName 
-    skuName: skuName
-    roleAssignmentConfiguration: roleAssignment
-    secretName: secretName
-    secretValue: secretValue
-  }
-}
-
-// MARK: Role Assignments
-module keyVaultRoleAssignments 'modules/keyVaultRoleAssignments.bicep' = {
-  scope: resourceGroup
-  name: 'keyVaultRoleAssignments'
-  params: {
     keyVaultName: keyVaultName
-    roleAssignmentConfiguration: {
-      principalId: aks.outputs.managedIdentityPrinicpalId
-      principalType: 'ServicePrincipal'
-      roleDefinitionId: '4633458b-17de-408a-b874-0445c86b69e6' // Key Vault Secrets User
-    }
+    skuName: skuName
+    roleAssignments: [
+      roleAssignment
+      {
+        principalId: managedIdentity.outputs.identityPrincipalId
+        principalType: 'ServicePrincipal'
+        roleDefinitionId: '00482a5a-887f-4fb3-b363-3b7fe8e74483' // Key Vault Administrator
+      }
+    ]
+    tags: tags
   }
 }

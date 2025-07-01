@@ -18,11 +18,6 @@ param userNodeCount int
 param osDiskSizeGB int
 param podCidr string
 
-// MARK: Managed Identity Parameters
-param managedIdentityName string
-param federatedCredentialName string
-param subject string
-
 // MARK: Key Vault Parameters
 @description('The Sku Name for the Key Vault.')
 @allowed([
@@ -71,20 +66,6 @@ resource resourceGroupKv 'Microsoft.Resources/resourceGroups@2025-04-01' = {
   tags: tags
 }
 
-// MARK: User Managed Identity
-module managedIdentity 'modules/managedIdentity.bicep' = {
-  name: '${managedIdentityName}-deployment'
-  scope: resourceGroupAks
-  params: {
-    location: location
-    name: managedIdentityName
-    federatedCredentialName: federatedCredentialName
-    issuer: aks.outputs.oidcIssuer
-    subject: subject
-    tags: tags
-  }
-}
-
 // MARK: Key Vault
 module keyVault 'modules/keyVault.bicep' = {
   scope: resourceGroupKv
@@ -94,11 +75,6 @@ module keyVault 'modules/keyVault.bicep' = {
     skuName: skuName
     roleAssignments: [
       roleAssignment
-      {
-        principalId: managedIdentity.outputs.identityPrincipalId
-        principalType: 'ServicePrincipal'
-        roleDefinitionId: '00482a5a-887f-4fb3-b363-3b7fe8e74483' // Key Vault Administrator
-      }
     ]
     tags: tags
   }

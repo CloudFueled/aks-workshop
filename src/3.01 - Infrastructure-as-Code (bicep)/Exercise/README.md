@@ -24,23 +24,7 @@ You will:
 
 ## 🧭 Step-by-step: orders from the Imperial DevSecOps command
 
-1. Create / extend the modules
-
-- Define a **User Assigned Managed Identity** module in the modules folder:
-
-  - Use the `Microsoft.ManagedIdentity/userAssignedIdentities@2025-01-31-preview` API version
-  - Set the `location` to the same as the AKS cluster
-  - Use a unique name for the identity
-  - Create a federated credential with the following specifications:
-
-    - audience: `api://AzureADTokenExchange`
-    - issuer: the oidcIssuerURL from the AKS cluster
-    - subject: `system:serviceaccount:external-secrets:sa-external-secrets`
-
-- Extend the Azure Key Vault module in the modules folder:
-
-  - Add a roleAssignments parameter to the Key Vault module
-  - Add a resource roleAssignment that loops over the entries in the roleAssignments parameter
+1. Create the Azure Key Vault module in the modules folder
 
 2.  Review and Extend the `main.bicep`
 
@@ -51,11 +35,9 @@ Locate the `main.bicep` file and complete the following TODOs:
   - Define it as a `resource`
   - Use the same location as the AKS cluster
 
-- Define and deploy an **User Managed Identity** with the created module.
 - Define and deploy a **Key Vault** with the modified module. The **name** of the Key Vault **should be unique**.
-- Assign the Managed Identity to the Key Vault with the `Key Vault Administrator` role
 - Assign yourself to the Key Vault with the `Key Vault Administrator` role
-- Make sure the tags are propagated to all resources, including the Key Vault and Managed Identity.
+- Make sure the tags are propagated to all resources, including the Key Vault.
 
 3.  Deploy the Resources
 

@@ -68,9 +68,23 @@ helm install external-secrets external-secrets/external-secrets \
 
 Use a Bicep template to:
 
-- Create a **User Assigned Managed Identity (UAMI)**
+- Define a **User Assigned Managed Identity** module in the modules folder:
+
+  - Use the `Microsoft.ManagedIdentity/userAssignedIdentities@2025-01-31-preview` API version
+  - Set the `location` to the same as the AKS cluster
+  - Use a unique name for the identity
+  - Create a federated credential with the following specifications:
+
+    - audience: `api://AzureADTokenExchange`
+    - issuer: the oidcIssuerURL from the AKS cluster
+    - subject: `system:serviceaccount:external-secrets:sa-external-secrets`
+
+
 - Assign it **Key Vault Secrets User** role scoped to the vault
 - Set up the **federated identity credential** on the UAMI
+- Define and deploy an **User Managed Identity** with the created module.
+- Assign the Managed Identity to the Key Vault with the `Key Vault Administrator` role
+- Make sure the tags are propagated to all resources, including the Key Vault and Managed Identity.
 
 Deploy:
 
