@@ -6,7 +6,7 @@ The Empire is expanding its fleet production and deployment facilities. Kuat Dri
 
 To maintain uniform control and reduce manual misconfiguration by rebel infiltrators, Imperial engineers are now required to **standardize deployments using Kustomize** — a tool that enables **base/overlay configuration management** across different sectors.
 
-> *“You don’t deploy the fleet you want. You deploy the fleet your environment demands.”* – Admiral Thrawn
+> _“You don’t deploy the fleet you want. You deploy the fleet your environment demands.”_ – Admiral Thrawn
 
 ---
 
@@ -17,8 +17,9 @@ As a systems officer in DevOps Command, your mission is to:
 1. Create a **Kustomization base** for the `squadron` deployment and service.
 2. Create **overlays** for:
 
-   * A **staging** environment with 1 replica.
-   * A **production** environment with 5 replicas and higher resource limits.
+   - A **development** environment with 1 replica.
+   - An **acceptance** environment with 5 replicas and higher resource limits.
+
 3. Use **Kustomize** to build and apply each overlay independently.
 4. Validate that the applied configurations match the environment specs.
 
@@ -39,19 +40,19 @@ resources:
 
 ---
 
-### 2. 🧪 Create the Staging Overlay
+### 2. 🧪 Create the Development Overlay
 
 Inside `overlays/dev/`, create:
 
-* A `kustomization.yaml` that points to the base
-* A `patch.yaml` that sets `replicas: 1` and adjusts resource limits
+- A `kustomization.yaml` that points to the base
+- A `patch.yaml` that sets `replicas: 1` and adjusts resource limits
 
 ```yaml
 # overlays/dev/kustomization.yaml
 bases:
-- ../../base
+  - ../../base
 patches:
-- patch.yaml
+  - patch.yaml
 ```
 
 ```yaml
@@ -65,11 +66,11 @@ spec:
   template:
     spec:
       containers:
-      - name: tie-fighter
-        resources:
-          requests:
-            cpu: "200m"
-            memory: "128Mi"
+        - name: tie-fighter
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "128Mi"
 ```
 
 ---
@@ -115,5 +116,5 @@ Use `kubectl get deployment tie-squadron` to confirm the correct `replicas` and 
 
 ## 💡 Learn More
 
-* [Declarative Management of Kubernetes Objects Using Kustomize](https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/)
-* [Docs](https://kubectl.docs.kubernetes.io/)
+- [Declarative Management of Kubernetes Objects Using Kustomize](https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/)
+- [Docs](https://kubectl.docs.kubernetes.io/)

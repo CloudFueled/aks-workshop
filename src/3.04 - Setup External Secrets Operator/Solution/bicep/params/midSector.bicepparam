@@ -2,7 +2,7 @@
 using '../main.bicep'
 
 // MARK: Global
-param location = 'northeurope'
+param location = 'francecentral'
 param tags = {
   Environment: 'Imperial Outpost'
   Owner: 'Darth Vader'
