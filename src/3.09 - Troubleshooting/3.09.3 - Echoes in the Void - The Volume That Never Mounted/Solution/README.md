@@ -18,5 +18,4 @@ You're deploying a PostgreSQL database using a Deployment and a PersistentVolume
 
 * [ ] Identified mismatch between PVC name in Deployment and actual PVC
 * [ ] Verified the existence and correctness of the StorageClass
-* [ ] Corrected the access mode for the PVC
 * [ ] Confirmed the pod starts and mounts volume successfully
