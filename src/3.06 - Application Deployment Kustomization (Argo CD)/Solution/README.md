@@ -33,16 +33,28 @@ You will:
 
 ```
 clusters/
-└── dev/
-    └── imperial-fleet/
-        └── manifests/
-            ├── squadron.yaml
-            ├── service.yaml
-            ├── tie-systems-configmap.yaml
-            ├── tie-weapons-secret.yaml
-            ├── job.yaml
-            └── cronJob.yaml
-        └── application.yaml   # ← ArgoCD Application manifest
+└── dta/
+    └── apps/
+        └── imperial-fleet/
+            ├── projects/
+            │   └── tie-squadron-project.yaml       # ArgoCD Project manifest
+            ├── applications/
+            │   └── application.yaml                # ArgoCD Application manifest
+            └── tie-squadron/
+                ├── base/
+                │   ├── squadron.yaml
+                │   ├── service.yaml
+                │   ├── tie-systems-configmap.yaml
+                │   ├── tie-weapons-secret.yaml
+                │   ├── job.yaml
+                │   └── cronjob.yaml
+                └── overlays/
+                    ├── dev/
+                    │   ├── patch.yaml
+                    │   └── kustomization.yaml
+                    └── acc/
+                        ├── patch.yaml
+                        └── kustomization.yaml
 ```
 
 ---
