@@ -8,7 +8,7 @@ spec:
   sourceRepos:
     - https://github.com/empire/gitops-repo.git
   destinations:
-    - namespace: jedi-fleet
+    - namespace: jedi-outpost-1
       server: https://kubernetes.default.svc
   clusterResourceWhitelist:
     - group: '*'
