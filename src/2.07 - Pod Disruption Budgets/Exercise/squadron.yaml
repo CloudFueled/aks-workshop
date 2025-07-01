@@ -69,7 +69,7 @@ spec:
             - containerPort: 80
           volumeMounts:
             - name: preflight-status
-              mountPath: /usr/share/nginx/telemtry
+              mountPath: /usr/share/nginx/telemetry
           livenessProbe:
             httpGet:
               path: /

@@ -15,7 +15,6 @@ Using **Bicep**, the Empire’s official Infrastructure as Code standard, you ar
 You will:
 
 - Extend an existing `main.bicep` file
-- Add a **User Assigned Managed Identity** with **Federated Credentials** for secrets integration
 - Deploy a **Key Vault** in a dedicated resource group with RBAC
 - Store a top-secret value
 - Enable **Advanced Container Networking Services (ACNS)** and **L7 Network Policies** on your AKS cluster after provisioning
@@ -26,7 +25,7 @@ You will:
 
 1. Create the Azure Key Vault module in the modules folder
 
-2.  Review and Extend the `main.bicep`
+2. Review and Extend the `main.bicep`
 
 Locate the `main.bicep` file and complete the following TODOs:
 
@@ -35,7 +34,7 @@ Locate the `main.bicep` file and complete the following TODOs:
   - Define it as a `resource`
   - Use the same location as the AKS cluster
 
-- Define and deploy a **Key Vault** with the modified module. The **name** of the Key Vault **should be unique**.
+- Define and deploy a **Key Vault** with the modified module. The **name** of the Key Vault **should be globally unique**.
 - Assign yourself to the Key Vault with the `Key Vault Administrator` role
 - Make sure the tags are propagated to all resources, including the Key Vault.
 
