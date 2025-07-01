@@ -37,6 +37,8 @@ If not, install Helm following the [official guide](https://helm.sh/docs/intro/i
 
 Add the Bitnami Helm repo (or another public repo)
 
+Hint: Check the resources section
+
 3.  Install a Helm Chart
 
 Install NGINX from Bitnami
