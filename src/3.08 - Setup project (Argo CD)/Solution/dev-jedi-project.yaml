@@ -19,5 +19,5 @@ spec:
       schedule: "0 20 * * *" # 8PM
       duration: 12h
       timeZone: UTC
-      application:
+      applications:
       - '*'
