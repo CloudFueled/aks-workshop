@@ -16,9 +16,9 @@ spec:
       targetRevision: 18.2.4
       helm:
         valueFiles:
-        - $values/clusters/dta/apps/rebel-fleet/x-wing/values.yaml
+          - $values/clusters/dta/apps/rebel-fleet/x-wing/dev-values.yaml
 
-    - repoURL: 'https://cloudfuelbe@dev.azure.com/cloudfuelbe/Research%20and%20development/_git/xerius-labs-gitops'
+    - repoURL: <repo-url>
       targetRevision: HEAD
       ref: values
   syncPolicy:

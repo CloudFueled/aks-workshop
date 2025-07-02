@@ -11,8 +11,8 @@ spec:
     namespace: dev-imperial-fleet
     server: https://kubernetes.default.svc
   sources:
-    - repoURL: '<repo-url>'
-      path: 'clusters/dta/apps/imperial-fleet/tie-squadron/overlays/dev'
+    - repoURL: <repo-url>
+      path: "clusters/dta/apps/imperial-fleet/tie-squadron/overlays/dev"
       targetRevision: HEAD
   syncPolicy:
     automated:
