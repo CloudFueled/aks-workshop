@@ -6,9 +6,9 @@ metadata:
 spec:
   description: GitOps project for the Sith deployments
   sourceRepos:
-    - https://github.com/empire/gitops-repo.git
+    - <repo-url> # Replace with the actual Git repository URL
   destinations:
-    - namespace: empire-outpost-1
+    - namespace: dev-imperial-fleet
       server: https://kubernetes.default.svc
   clusterResourceWhitelist:
     - group: '*'

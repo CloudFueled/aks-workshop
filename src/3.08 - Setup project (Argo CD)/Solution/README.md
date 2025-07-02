@@ -21,8 +21,8 @@ You will:
 * Limit **sync windows** for both
 * Update the **ArgoCD Application manifests** from:
 
-  * **Lab 3.06** (e.g. `x-wing-fleet`) to use `jedi-project`
-  * **Lab 3.07** (e.g. `tie-squadron`) to use `sith-project`
+  * **Lab 3.07** (e.g. `x-wing-squadron`) to use `jedi-project`
+  * **Lab 3.06** (e.g. `tie-squadron`) to use `sith-project`
 
 ---
 
