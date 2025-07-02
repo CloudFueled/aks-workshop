@@ -60,7 +60,7 @@ clusters/
 
 02. Create the ArgoCD Application manifest
 ```yaml
-# clusters/dta/imperial-fleet/application.yaml
+# clusters/dta/apps/imperial-fleet/applications/application.yaml
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -72,7 +72,7 @@ spec:
     namespace: dev-imperial-fleet
     server: https://kubernetes.default.svc
   source:
-    repoURL: "https://dev.azure.com/<org-name>/aks-workshop"
+    repoURL: <repo-url>
     path: clusters/dta/apps/imperial-fleet/tie-squadron/overlays/dev
     targetRevision: HEAD
 ```
