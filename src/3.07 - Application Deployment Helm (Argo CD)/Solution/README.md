@@ -57,8 +57,8 @@ clusters/
 Check pod status and access the service locally:
 
 ```bash
-kubectl -n x-wing get pods
-kubectl -n kubectl -n dev-rebel-fleet port-forward svc/x-wing-nginx 8080:8080
+kubectl -n dev-rebel-fleet get pods
+kubectl -n dev-rebel-fleet port-forward svc/x-wing-nginx 8080:8080
 curl http://localhost:8080
 ```
 
