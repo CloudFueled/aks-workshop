@@ -8,11 +8,11 @@ metadata:
 spec:
   project: default
   destination:
-    namespace: empire-outpost-1
+    namespace: dev-empire-outpost
     server: https://kubernetes.default.svc
   sources:
-    - repoURL: 'https://cloudfuelbe@dev.azure.com/cloudfuelbe/Research%20and%20development/_git/xerius-labs-gitops'
-      path: 'clusters/dta/apps/imperial-fleet/tie-squadron'
+    - repoURL: '<repo-url>'
+      path: 'clusters/dta/apps/imperial-fleet/tie-squadron/overlays/dev'
       targetRevision: HEAD
   syncPolicy:
     automated:

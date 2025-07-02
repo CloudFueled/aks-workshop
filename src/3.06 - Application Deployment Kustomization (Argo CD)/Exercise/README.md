@@ -37,7 +37,7 @@ clusters/
     └── apps/
         └── imperial-fleet/
             ├── applications/
-            │   └── application.yaml                # ArgoCD Application manifest
+            │   └── dev-application.yaml                # ArgoCD Application manifest
             └── tie-squadron/
                 ├── base/
                 │   ├── kustomization.yaml
@@ -68,9 +68,12 @@ metadata:
   namespace: argocd
 spec:
   project: default
+  destination:
+    namespace: dev-empire-outpost
+    server: https://kubernetes.default.svc
   source:
     repoURL: "https://dev.azure.com/<org-name>/aks-workshop"
-    path: clusters/dta/imperial-fleet/manifests
+    path: clusters/dta/apps/imperial-fleet/tie-squadron/overlays/dev
     targetRevision: HEAD
 ```
 
