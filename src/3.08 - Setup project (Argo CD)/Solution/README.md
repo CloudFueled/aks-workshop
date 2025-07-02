@@ -39,7 +39,7 @@ metadata:
 spec:
   description: GitOps project for the Jedi deployments
   sourceRepos:
-    - https://github.com/empire/gitops-repo.git
+    - <repo-url>
   destinations:
     - namespace: dev-rebel-fleet
       server: https://kubernetes.default.svc
