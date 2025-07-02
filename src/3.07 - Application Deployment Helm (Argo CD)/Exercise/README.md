@@ -16,7 +16,7 @@ You will:
 
 * Define an **ArgoCD Application** to deploy the **Bitnami NGINX Helm chart**
 * Provide a **custom `values.yaml`** file stored in Git
-* Deploy to the **`x-wing` namespace**
+* Deploy to the **`dev-rebel-fleet` namespace**
 * Confirm the X-Wing relay is active with the proper config
 
 ---
@@ -33,7 +33,7 @@ clusters/
     └── apps/
         └── rebel-fleet/
             ├── applications/
-            │   └── application.yaml                 # ArgoCD Application manifest
+            │   └── dev-application.yaml                 # ArgoCD Application manifest
             └── x-wing/
                 └── values.yaml
 ```
