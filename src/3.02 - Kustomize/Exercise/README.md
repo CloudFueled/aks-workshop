@@ -40,11 +40,11 @@ resources:
 
 ---
 
-### 2. 🧪 Create the Staging Overlay
+### 2. 🧪 Create the Development Overlay
 
 Inside `overlays/dev/`, create:
 
-- A `kustomization.yaml` that points to the base, points to the `{environment}-imperial-fleet` namespace and includes a patch.
+- A `kustomization.yaml` that points to the base, points to the `<environment>-imperial-fleet` namespace and includes a patch.
 - A `patch.yaml` that sets `replicas: 1` and adjusts resource limits
 
 ```yaml
@@ -98,7 +98,7 @@ kubectl create namespace dev-imperial-fleet
 kubectl create namespace acc-imperial-fleet
 ```
 
-Use `kubectl get deployment tie-squadron` to confirm the correct `replicas` and configuration.
+Use `kubectl get deployment tie-squadron -n <namespace>` to confirm the correct `replicas` and configuration.
 
 ---
 

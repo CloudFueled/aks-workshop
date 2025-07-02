@@ -44,13 +44,14 @@ resources:
 
 Inside `overlays/dev/`, create:
 
-- A `kustomization.yaml` that points to the base
+- A `kustomization.yaml` that points to the base, points to the `<environment>-imperial-fleet` namespace and includes a patch.
 - A `patch.yaml` that sets `replicas: 1` and adjusts resource limits
 
 ```yaml
 # overlays/dev/kustomization.yaml
 bases:
   - ../../base
+namespace: dev-imperial-fleet
 patches:
   - patch.yaml
 ```
@@ -60,7 +61,7 @@ patches:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: tie-squadron
+  name: squadron
 spec:
   replicas: 1
   template:
@@ -90,7 +91,14 @@ kubectl apply -k overlays/dev/
 kubectl apply -k overlays/acc/
 ```
 
-Use `kubectl get deployment tie-squadron` to confirm the correct `replicas` and configuration.
+Make sure to create the namespaces first if they don't exist:
+
+```bash
+kubectl create namespace dev-imperial-fleet
+kubectl create namespace acc-imperial-fleet
+```
+
+Use `kubectl get deployment tie-squadron -n <namespace>` to confirm the correct `replicas` and configuration.
 
 ---
 
