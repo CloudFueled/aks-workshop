@@ -73,11 +73,11 @@ spec:
 
 6. Update the image tag from the deployment in the tie-squadron `Deployment` to `1.28.0`
 
-7. Update the targetRevision in the x-wing-squadron application manifest to `18.2.3`
+7. Update the targetRevision in the x-wing-squadron application manifest to downgrade to `18.2.3`
 
 ---
 
-7. Push Changes and Validate
+8. Push Changes and Validate
 
 Then in the **ArgoCD UI**:
 
