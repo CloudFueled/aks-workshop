@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: jedi-project
+  name: dev-jedi-project
   namespace: argocd
 spec:
   description: GitOps project for the Jedi deployments

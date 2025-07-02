@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: sith-project
+  name: dev-sith-project
   namespace: argocd
 spec:
   description: GitOps project for the Sith deployments
