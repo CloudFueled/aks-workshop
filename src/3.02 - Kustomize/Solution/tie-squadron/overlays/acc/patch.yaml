@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: tie-squadron
+  name: squadron
 spec:
   selector:
     matchLabels:
@@ -10,8 +10,8 @@ spec:
   template:
     spec:
       containers:
-      - name: tie-fighter
-        resources:
-          requests:
-            cpu: "500m"
-            memory: "256Mi"
+        - name: tie-fighter
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "256Mi"
