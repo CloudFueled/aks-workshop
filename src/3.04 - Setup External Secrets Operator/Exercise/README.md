@@ -40,7 +40,7 @@ You will:
 
 ```bash
 az keyvault secret set \
-  --vault-name kv-deathstar-mvh \
+  --vault-name <key-vault-name> \
   --name azdo-pat \
   --value <your-pat-token>
 ```
@@ -61,7 +61,6 @@ Use a Bicep template to:
     - audience: `api://AzureADTokenExchange`
     - issuer: the oidcIssuerURL from the AKS cluster
     - subject: `system:serviceaccount:external-secrets:sa-external-secrets`
-
 
 - Assign it **Key Vault Secrets User** role scoped to the vault
 - Set up the **federated identity credential** on the UAMI
@@ -92,7 +91,7 @@ helm repo add external-secrets https://charts.external-secrets.io
 helm install external-secrets external-secrets/external-secrets \
   -n external-secrets \
   --create-namespace \
-  --set-string serviceAccount.annotations."azure\.workload\.identity/client-id"="2802047a-44e1-47f6-94c3-3303202941be" \
+  --set-string serviceAccount.annotations."azure\.workload\.identity/client-id"="0d6015d9-363b-4806-b76f-1a3aa5bd7eba" \
   --set-string serviceAccount.annotations."azure\.workload\.identity/use"="true" \
   --set-string "serviceAccount.name"="sa-external-secrets"
 ```
