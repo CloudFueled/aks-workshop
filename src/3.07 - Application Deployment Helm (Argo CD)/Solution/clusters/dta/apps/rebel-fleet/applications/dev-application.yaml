@@ -16,7 +16,7 @@ spec:
       targetRevision: 18.2.4
       helm:
         valueFiles:
-          - $values/clusters/dta/apps/rebel-fleet/x-wing/dev-values.yaml
+          - $values/clusters/dta/apps/rebel-fleet/x-wing-squadron/dev-values.yaml
 
     - repoURL: <repo-url>
       targetRevision: HEAD
