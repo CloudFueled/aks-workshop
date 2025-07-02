@@ -4,5 +4,7 @@ kind: Kustomization
 resources:
   - ../../base
 
+namespace: dev-imperial-fleet
+
 patches:
   - path: patch.yaml

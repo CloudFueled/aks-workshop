@@ -14,7 +14,6 @@ spec:
       labels:
         app: squadron
     spec:
-      serviceAccountName: sa-squadron
       tolerations:
         - key: "access"
           operator: "Equal"
@@ -63,8 +62,8 @@ spec:
               cpu: "100m"
               memory: "128Mi"
             limits:
-              cpu: "200m"
-              memory: "128Mi"
+              cpu: "600m"
+              memory: "512Mi"
           ports:
             - containerPort: 80
           volumeMounts:
