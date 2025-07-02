@@ -34,7 +34,7 @@ clusters/
         └── rebel-fleet/
             ├── applications/
             │   └── dev-application.yaml                 # ArgoCD Application manifest
-            └── x-wing/
+            └── x-wing-squadron/
                 └── dev-values.yaml
 ```
 
