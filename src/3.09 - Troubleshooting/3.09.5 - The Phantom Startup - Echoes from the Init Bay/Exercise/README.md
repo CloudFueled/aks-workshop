@@ -28,3 +28,9 @@ kubectl apply -f deployment.yaml
 * [ ] Confirmed volume mount names are consistent across containers
 * [ ] Validated proper sequencing of database initialization and pod startup
 * [ ] Examined script permissions and execution within init containers
+
+---
+
+## 📚 Resources
+
+- [Mysql CLI Commands](https://dev.mysql.com/doc/refman/5.7/en/command-line-options.html)
