@@ -4,7 +4,7 @@
 
 The Rebel Alliance is setting up tactical relay points throughout the Mid Rim to support rapid hyperspace jumps and squadron coordination. You’ve been tasked with deploying a secure, configurable **NGINX relay node** using **Helm**, managed declaratively via **ArgoCD**.
 
-To meet mission requirements, you’ll reference a custom `values.yaml` stored in your GitOps repository — ensuring X-Wing squadrons get the precise configuration needed for agile communication.
+To meet mission requirements, you’ll reference a custom `dev-values.yaml` stored in your GitOps repository — ensuring X-Wing squadrons get the precise configuration needed for agile communication.
 
 > *“Without comms, we’re flying blind. Let’s light up the grid.”* – Commander Antilles
 
