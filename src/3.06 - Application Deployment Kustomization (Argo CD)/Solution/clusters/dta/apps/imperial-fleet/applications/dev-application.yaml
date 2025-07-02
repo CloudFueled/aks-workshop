@@ -8,7 +8,7 @@ metadata:
 spec:
   project: default
   destination:
-    namespace: dev-empire-outpost
+    namespace: dev-imperial-fleet
     server: https://kubernetes.default.svc
   sources:
     - repoURL: '<repo-url>'

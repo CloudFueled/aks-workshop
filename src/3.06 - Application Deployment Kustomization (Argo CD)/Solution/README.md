@@ -69,7 +69,7 @@ metadata:
 spec:
   project: default
   destination:
-    namespace: dev-empire-outpost
+    namespace: dev-imperial-fleet
     server: https://kubernetes.default.svc
   source:
     repoURL: "https://dev.azure.com/<org-name>/aks-workshop"
