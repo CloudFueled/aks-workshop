@@ -1,10 +1,10 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: squadron
+  name: tie-squadron
   namespace: argocd
   labels:
-    app: squadron
+    app: tie-squadron
 spec:
   project: default
   destination:

@@ -5,6 +5,6 @@ resources:
   - tie-weapons-secret.yaml
   - tie-systems-configmap.yaml
   - service.yaml
-  - squadron.yaml
+  - tie-squadron.yaml
   - job.yaml
   - cronJob.yaml

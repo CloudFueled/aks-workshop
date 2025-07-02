@@ -14,7 +14,7 @@ To maintain uniform control and reduce manual misconfiguration by rebel infiltra
 
 As a systems officer in DevOps Command, your mission is to:
 
-1. Create a **Kustomization base** for the `squadron` deployment and service.
+1. Create a **Kustomization base** for the `tie-squadron` deployment and service.
 2. Create **overlays** for:
 
    - A **development** environment with 1 replica.
@@ -34,7 +34,7 @@ Inside `tie-squadron/base/`, define the **Deployment** and **Service** manifests
 ```yaml
 # tie-squadron/base/kustomization.yaml
 resources:
-  - squadron.yaml
+  - tie-squadron.yaml
   - service.yaml
 ```
 
@@ -61,7 +61,7 @@ patches:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: squadron
+  name: tie-squadron
 spec:
   replicas: 1
   template:

@@ -2,17 +2,17 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: squadron
-  name: squadron
+    app: tie-squadron
+  name: tie-squadron
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: squadron
+      app: tie-squadron
   template:
     metadata:
       labels:
-        app: squadron
+        app: tie-squadron
     spec:
       tolerations:
         - key: "access"
@@ -64,40 +64,14 @@ spec:
             limits:
               cpu: "200m"
               memory: "128Mi"
-          envFrom:
-            - configMapRef:
-                name: tie-systems
-          env:
-            - name: TARGETING_AI
-              valueFrom:
-                secretKeyRef:
-                  name: tie-weapons
-                  key: targetingAI
-            - name: FIRE_CONTROL_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: tie-weapons
-                  key: fireControlKey
           ports:
             - containerPort: 80
           volumeMounts:
             - name: preflight-status
               mountPath: /usr/share/nginx/telemetry
-          startupProbe:
-            httpGet:
-              path: /
-              port: 80
-            failureThreshold: 30
-            periodSeconds: 2
           livenessProbe:
             httpGet:
               path: /
               port: 80
             initialDelaySeconds: 10
             periodSeconds: 10
-          readinessProbe:
-            httpGet:
-              path: /
-              port: 80
-            initialDelaySeconds: 5
-            periodSeconds: 5

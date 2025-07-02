@@ -1,11 +1,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: squadron
+  name: tie-squadron
 spec:
   selector:
     matchLabels:
-      app: squadron
+      app: tie-squadron
   replicas: 1
   template:
     spec:

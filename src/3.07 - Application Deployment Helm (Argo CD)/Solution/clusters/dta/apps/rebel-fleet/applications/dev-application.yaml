@@ -1,10 +1,10 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: x-wing
+  name: x-wing-squadron
   namespace: argocd
   labels:
-    app: x-wing
+    app: x-wing-squadron
 spec:
   project: default
   destination:

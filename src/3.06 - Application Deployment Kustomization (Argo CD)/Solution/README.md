@@ -4,7 +4,7 @@
 
 Following recent mission-critical oversights—unsynchronized configs, untracked TIE fighter upgrades, and rogue scanner cronjobs—Imperial High Command has enforced full GitOps compliance across all clusters.
 
-From now on, every deployment—from squadrons to surveillance systems—must be **declarative, version-controlled**, and **auto-synced via ArgoCD**.
+From now on, every deployment—from tie-squadrons to surveillance systems—must be **declarative, version-controlled**, and **auto-synced via ArgoCD**.
 
 > *“Victory is achieved not through chaos, but through precision and automation.”* – Grand Admiral Thrawn
 
@@ -17,7 +17,7 @@ You will:
 * Create an **ArgoCD Application** declaratively to track Git-based manifests
 * Deploy critical components:
 
-  * `squadron.yaml`
+  * `tie-squadron.yaml`
   * `service.yaml`
   * `tie-systems-configmap.yaml`
   * `tie-weapons-secret.yaml`
@@ -41,7 +41,7 @@ clusters/
             └── tie-squadron/
                 ├── base/
                 │   ├── kustomization.yaml
-                │   ├── squadron.yaml
+                │   ├── tie-squadron.yaml
                 │   ├── service.yaml
                 │   ├── tie-systems-configmap.yaml
                 │   ├── tie-weapons-secret.yaml
@@ -64,7 +64,7 @@ clusters/
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: squadron
+  name: tie-squadron
   namespace: argocd
 spec:
   project: default
