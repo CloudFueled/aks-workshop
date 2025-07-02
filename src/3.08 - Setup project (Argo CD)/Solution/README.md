@@ -41,7 +41,7 @@ spec:
   sourceRepos:
     - https://github.com/empire/gitops-repo.git
   destinations:
-    - namespace: jedi-fleet
+    - namespace: dev-rebel-fleet
       server: https://kubernetes.default.svc
   clusterResourceWhitelist:
     - group: '*'
@@ -57,12 +57,12 @@ spec:
 
 2. Create `sith-project` using the following specs:
 
-- name: sith-project
-- destination namespace: empire-outpost-1
-- destination server: https://kubernetes.default.svc
-- the sync window schedule should start at 8AM
-- the sync window duration should be 12 hours
-- the sync window time zone should be UTC
+- name: `sith-project`
+- destination namespace: `dev-imperial-fleet`
+- destination server: `https://kubernetes.default.svc`
+- the sync window schedule should start at `8AM`
+- the sync window duration should be `12 hours`
+- the sync window time zone should be `UTC`
 
 3. Apply Both Projects
 
@@ -70,7 +70,9 @@ spec:
 
 5. Update Application from **Lab 3.06** (Sith) to be part of the sith-project
 
-6. Update the image tag from the deployment in the squadron `Deployment` to 1.28.0
+6. Update the image tag from the deployment in the tie-squadron `Deployment` to `1.28.0`
+
+7. Update the targetRevision in the x-wing-squadron application manifest to `18.2.3`
 
 ---
 
