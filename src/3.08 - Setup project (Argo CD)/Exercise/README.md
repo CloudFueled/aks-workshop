@@ -28,18 +28,19 @@ You will:
 
 ## 🛠️ Step-by-step: Defining the Projects
 
-1. Create `jedi-project`
+1. Create `dev-jedi-project`
 
 ```yaml
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: jedi-project
+  name: dev-jedi-project
   namespace: argocd
 spec:
   description: GitOps project for the Jedi deployments
   sourceRepos:
     - <repo-url>
+    - https://charts.bitnami.com/bitnami
   destinations:
     - namespace: dev-rebel-fleet
       server: https://kubernetes.default.svc
@@ -55,9 +56,9 @@ spec:
 
 ---
 
-2. Create `sith-project` using the following specs:
+2. Create `dev-sith-project` using the following specs:
 
-- name: `sith-project`
+- name: `dev-sith-project`
 - destination namespace: `dev-imperial-fleet`
 - destination server: `https://kubernetes.default.svc`
 - the sync window schedule should start at `8AM`
