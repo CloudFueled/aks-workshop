@@ -15,7 +15,7 @@ To meet mission requirements, you’ll reference a custom `values.yaml` stored i
 You will:
 
 * Define an **ArgoCD Application** to deploy the **Bitnami NGINX Helm chart**
-* Provide a **custom `values.yaml`** file stored in Git
+* Provide a **custom `dev-values.yaml`** file stored in Git
 * Deploy to the **`dev-rebel-fleet` namespace**
 * Confirm the X-Wing relay is active with the proper config
 
@@ -35,14 +35,14 @@ clusters/
             ├── applications/
             │   └── dev-application.yaml                 # ArgoCD Application manifest
             └── x-wing/
-                └── values.yaml
+                └── dev-values.yaml
 ```
 
 02. Create the ArgoCD `application.yaml`
 
-* The repository URL should be: https://charts.bitnami.com/bitnami/
-* The chart should be nginx
-* The target revision should be 18.2.4
+* The repository URL should be `https://charts.bitnami.com/bitnami/`
+* The chart should be `nginx`
+* The target revision should be `18.2.4`
 
 03. Commit and Deploy
 
@@ -58,7 +58,7 @@ Check pod status and access the service locally:
 
 ```bash
 kubectl -n x-wing get pods
-kubectl -n x-wing port-forward svc/x-wing-squadron 8080:8080
+kubectl -n kubectl -n dev-rebel-fleet port-forward svc/x-wing-nginx 8080:8080
 curl http://localhost:8080
 ```
 
@@ -66,5 +66,5 @@ curl http://localhost:8080
 
 ## 📚 Resources
 
-* [Bitnami NGINX Helm Chart](https://artifacthub.io/packages/helm/bitnami/nginx)
+* [Bitnami Charts](https://charts.bitnami.com/)
 * [ArgoCD Helm Support](https://argo-cd.readthedocs.io/en/stable/user-guide/helm/)

@@ -137,7 +137,7 @@ helm install nginx bitnami/nginx -f values.yaml
   kubectl describe pod <nginx-pod-name>
   ```
 
-  ## 📚 Resources
+## 📚 Resources
 
 * [Helm Commands](https://helm.sh/docs/helm/)
 * [Helm Cheatsheet](https://helm.sh/docs/intro/cheatsheet/)
