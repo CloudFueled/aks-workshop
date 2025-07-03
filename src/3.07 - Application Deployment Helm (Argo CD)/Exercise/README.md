@@ -40,7 +40,7 @@ clusters/
 
 2.  Create the ArgoCD `application.yaml`
 
-- The repository URL should be `https://charts.bitnami.com/bitnami/`
+- The repository URL should be `https://charts.bitnami.com/bitnami`
 - The chart should be `nginx`
 - The target revision should be `18.2.4`
 
