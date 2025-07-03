@@ -66,7 +66,7 @@ resource aks 'Microsoft.ContainerService/managedClusters@2025-03-02-preview' = {
   tags: tags
 }
 
-resource userNodePool 'Microsoft.ContainerService/managedClusters/agentPools@2025-03-01' = {
+resource userNodePool 'Microsoft.ContainerService/managedClusters/agentPools@2025-05-01' = {
   parent: aks
   name: 'userpool'
   properties: {
