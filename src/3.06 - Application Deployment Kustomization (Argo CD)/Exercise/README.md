@@ -6,7 +6,7 @@ Following recent mission-critical oversights—unsynchronized configs, untracked
 
 From now on, every deployment—from tie-squadrons to surveillance systems—must be **declarative, version-controlled**, and **auto-synced via ArgoCD**.
 
-> *“Victory is achieved not through chaos, but through precision and automation.”* – Grand Admiral Thrawn
+> _“Victory is achieved not through chaos, but through precision and automation.”_ – Grand Admiral Thrawn
 
 ---
 
@@ -14,22 +14,23 @@ From now on, every deployment—from tie-squadrons to surveillance systems—mus
 
 You will:
 
-* Create an **ArgoCD Application** declaratively to track Git-based manifests
-* Deploy critical components:
+- Create an **ArgoCD Application** declaratively to track Git-based manifests
+- Deploy critical components:
 
-  * `tie-squadron.yaml`
-  * `service.yaml`
-  * `tie-systems-configmap.yaml`
-  * `tie-weapons-secret.yaml`
-  * `job.yaml`
-  * `cronJob.yaml`
-* Ensure changes pushed to Git are automatically synced into the cluster
+  - `tie-squadron.yaml`
+  - `service.yaml`
+  - `tie-systems-configmap.yaml`
+  - `tie-weapons-secret.yaml`
+  - `job.yaml`
+  - `cronJob.yaml`
+
+- Ensure changes pushed to Git are automatically synced into the cluster
 
 ---
 
 ## 🛠️ Step-by-step: enabling GitOps for the Empire
 
-01. Prepare Your GitOps repository structure
+1.  Prepare Your GitOps repository structure
 
 ```
 clusters/
@@ -58,9 +59,10 @@ clusters/
 
 ---
 
-02. Create the ArgoCD Application manifest
+2.  Create the ArgoCD Application manifest
+
 ```yaml
-# clusters/dta/apps/imperial-fleet/applications/application.yaml
+# clusters/dta/apps/imperial-fleet/applications/dev-application.yaml
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
@@ -77,6 +79,6 @@ spec:
     targetRevision: HEAD
 ```
 
-03. Apply the Application to ArgoCD
+3.  Apply the Application to ArgoCD
 
-04. Monitor deployment in the ArgoCD UI
+4.  Monitor deployment in the ArgoCD UI
