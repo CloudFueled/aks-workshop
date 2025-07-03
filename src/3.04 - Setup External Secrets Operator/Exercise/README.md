@@ -62,10 +62,7 @@ Use a Bicep template to:
     - issuer: the oidcIssuerURL from the AKS cluster
     - subject: `system:serviceaccount:external-secrets:sa-external-secrets`
 
-- Assign it **Key Vault Secrets User** role scoped to the vault
-- Set up the **federated identity credential** on the UAMI
-- Define and deploy an **User Managed Identity** with the created module.
-- Assign the Managed Identity to the Key Vault with the `Key Vault Administrator` role
+- Assign the UAMI the **Key Vault Secrets User** role scoped to the vault
 - Make sure the tags are propagated to all resources, including the Key Vault and Managed Identity.
 
 Deploy:
