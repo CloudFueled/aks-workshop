@@ -6,7 +6,7 @@ The Rebel Alliance is setting up tactical relay points throughout the Mid Rim to
 
 To meet mission requirements, you’ll reference a custom `dev-values.yaml` stored in your GitOps repository — ensuring X-Wing squadrons get the precise configuration needed for agile communication.
 
-> *“Without comms, we’re flying blind. Let’s light up the grid.”* – Commander Antilles
+> _“Without comms, we’re flying blind. Let’s light up the grid.”_ – Commander Antilles
 
 ---
 
@@ -14,16 +14,16 @@ To meet mission requirements, you’ll reference a custom `dev-values.yaml` stor
 
 You will:
 
-* Define an **ArgoCD Application** to deploy the **Bitnami NGINX Helm chart**
-* Provide a **custom `dev-values.yaml`** file stored in Git
-* Deploy to the **`dev-rebel-fleet` namespace**
-* Confirm the X-Wing relay is active with the proper config
+- Define an **ArgoCD Application** to deploy the **Bitnami NGINX Helm chart**
+- Provide a **custom `dev-values.yaml`** file stored in Git
+- Deploy to the **`dev-rebel-fleet` namespace**
+- Confirm the X-Wing relay is active with the proper config
 
 ---
 
 ## 🛠️ Step-by-step Instructions
 
-01. Prepare Your GitOps repository structure
+1.  Prepare Your GitOps repository structure
 
 In your Git repository, organize the following structure:
 
@@ -38,33 +38,33 @@ clusters/
                 └── dev-values.yaml
 ```
 
-02. Create the ArgoCD `application.yaml`
+2.  Create the ArgoCD `application.yaml`
 
-* The repository URL should be `https://charts.bitnami.com/bitnami/`
-* The chart should be `nginx`
-* The target revision should be `18.2.4`
+- The repository URL should be `https://charts.bitnami.com/bitnami/`
+- The chart should be `nginx`
+- The target revision should be `18.2.4`
 
-03. Commit and Deploy
+3.  Commit and Deploy
 
-04. Then in ArgoCD:
+4.  Then in ArgoCD:
 
-* Locate the `x-wing-squadron` application
-* Click **Sync**
-* Wait for it to go Healthy & Synced
+- Locate the `x-wing-squadron` application
+- Click **Sync**
+- Wait for it to go Healthy & Synced
 
-05. Verify
+5.  Verify
 
 Check pod status and access the service locally:
 
 ```bash
-kubectl -n x-wing get pods
-kubectl -n kubectl -n dev-rebel-fleet port-forward svc/x-wing-nginx 8080:8080
-curl http://localhost:8080
+kubectl -n dev-rebel-fleet get pods
+kubectl -n dev-rebel-fleet port-forward svc/x-wing-squadron-nginx 8081:8080
+curl http://localhost:8081
 ```
 
 ---
 
 ## 📚 Resources
 
-* [Bitnami Charts](https://charts.bitnami.com/)
-* [ArgoCD Helm Support](https://argo-cd.readthedocs.io/en/stable/user-guide/helm/)
+- [Bitnami Charts](https://charts.bitnami.com/)
+- [ArgoCD Helm Support](https://argo-cd.readthedocs.io/en/stable/user-guide/helm/)

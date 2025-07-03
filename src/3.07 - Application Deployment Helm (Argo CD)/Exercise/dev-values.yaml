@@ -1,6 +1,7 @@
 service:
   type: LoadBalancer
-  port: 8080
+  port:
+    http: 8080
 
 replicaCount: 3
 
