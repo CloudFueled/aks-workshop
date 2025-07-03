@@ -144,7 +144,7 @@ Create a `Namespace` named argocd
 Create an `ExternalSecret` that **creates the full ArgoCD repo `Secret`**, including both the username and PAT, directly from Azure Key Vault.
 
 ```yaml
-apiVersion: external-secrets.io/v1beta1
+apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
   name: azdo-repo
