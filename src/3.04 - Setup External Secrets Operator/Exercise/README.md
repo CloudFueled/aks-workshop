@@ -33,7 +33,7 @@ You will:
 
 1. Generate a PAT from [Azure DevOps](https://dev.azure.com/):
 
-   - Scope: **Code (Read)** and **Service Connections (Read/Write)**
+   - Scope: **Code (Read)**
    - Expiry: 30–90 days (for demo purposes)
 
 2. Store the PAT in Azure Key Vault:
