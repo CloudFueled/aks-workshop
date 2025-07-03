@@ -49,11 +49,13 @@ Inside `overlays/dev/`, create:
 
 ```yaml
 # overlays/dev/kustomization.yaml
-bases:
+resources:
   - ../../base
+
 namespace: dev-imperial-fleet
+
 patches:
-  - patch.yaml
+  - path: patch.yaml
 ```
 
 ```yaml
