@@ -66,7 +66,9 @@ Create a file named `values.yaml` with:
 ```yaml
 service:
   type: LoadBalancer
-  port: 8080
+  ports:
+    http: 8080
+    https: 8443
 
 replicaCount: 3
 
