@@ -14,7 +14,7 @@ param podCidr string
 param tags object
 
 // MARK: Resources
-resource aks 'Microsoft.ContainerService/managedClusters@2025-03-02-preview' = {
+resource aks 'Microsoft.ContainerService/managedClusters@2025-05-01' = {
   name: clusterName
   location: resourceGroup().location
   identity: {
