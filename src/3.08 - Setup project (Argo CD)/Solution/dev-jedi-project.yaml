@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: dev-jedi-project
+  namespace: argocd
+spec:
+  description: GitOps project for the Jedi deployments
+  sourceRepos:
+    - <repo-url> # Replace with the actual Git repository URL
+    - https://charts.bitnami.com/bitnami
+  destinations:
+    - namespace: dev-rebel-fleet
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
+  syncWindows:
+    - kind: allow
+      schedule: "0 20 * * *" # 8PM
+      duration: 12h
+      timeZone: UTC
+      applications:
+      - '*'

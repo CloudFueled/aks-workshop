@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: secret-checker
+  namespace: default
+spec:
+  containers:
+    - name: env-checker
+      image: busybox
+      command: ["/bin/sh", "-c"]
+      args:
+        - |
+          echo "AZDO_PAT is: $AZDO_PAT"
+          sleep 3600
+      env:
+        - name: AZDO_PAT
+          valueFrom:
+            secretKeyRef:
+              name: azdo-pat
+              key: pat
+  restartPolicy: Never

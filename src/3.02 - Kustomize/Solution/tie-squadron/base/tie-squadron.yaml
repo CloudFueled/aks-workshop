@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: tie-squadron
+  name: tie-squadron
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: tie-squadron
+  template:
+    metadata:
+      labels:
+        app: tie-squadron
+    spec:
+      tolerations:
+        - key: "access"
+          operator: "Equal"
+          value: "restricted"
+          effect: "NoSchedule"
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - tie-fighter
+              topologyKey: "kubernetes.io/hostname"
+
+      volumes:
+        - name: preflight-status
+          emptyDir: {}
+
+      initContainers:
+        - name: preflight-check
+          image: busybox
+          command:
+            [
+              "sh",
+              "-c",
+              'echo "✅ Preflight complete – all systems go" > /mnt/preflight/status.txt',
+            ]
+          volumeMounts:
+            - name: preflight-status
+              mountPath: /mnt/preflight
+        - name: telemetry-logger
+          image: busybox
+          restartPolicy: Always
+          command: ["sh", "-c", "tail -f /mnt/preflight/status.txt"]
+          volumeMounts:
+            - name: preflight-status
+              mountPath: /mnt/preflight
+
+      containers:
+        - image: nginx
+          name: tie-fighter
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "600m"
+              memory: "512Mi"
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: preflight-status
+              mountPath: /usr/share/nginx/telemetry
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 10

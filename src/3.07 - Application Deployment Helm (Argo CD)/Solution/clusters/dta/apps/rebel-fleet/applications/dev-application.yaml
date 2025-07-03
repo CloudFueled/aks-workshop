@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: x-wing-squadron
+  namespace: argocd
+  labels:
+    app: x-wing-squadron
+spec:
+  project: default
+  destination:
+    namespace: dev-rebel-fleet
+    server: https://kubernetes.default.svc
+  sources:
+    - repoURL: https://charts.bitnami.com/bitnami
+      chart: nginx
+      targetRevision: 18.2.4
+      helm:
+        valueFiles:
+          - $values/clusters/dta/apps/rebel-fleet/x-wing-squadron/dev-values.yaml
+
+    - repoURL: <repo-url>
+      targetRevision: HEAD
+      ref: values
+  syncPolicy:
+    automated:
+      allowEmpty: true
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - ApplyOutOfSyncOnly=true
+      - ServerSideApply=true
+      - CreateNamespace=true
