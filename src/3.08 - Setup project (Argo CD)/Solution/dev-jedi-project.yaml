@@ -12,12 +12,14 @@ spec:
     - namespace: dev-rebel-fleet
       server: https://kubernetes.default.svc
   clusterResourceWhitelist:
-    - group: '*'
-      kind: '*'
+    - group: "*"
+      kind: "*"
   syncWindows:
     - kind: allow
       schedule: "0 20 * * *" # 8PM
       duration: 12h
       timeZone: UTC
       applications:
-      - '*'
+        - "*"
+      namespaces:
+        - "*"
