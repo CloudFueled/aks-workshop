@@ -1,1 +1,0 @@
-kubectl exec net-tester -- nslookup google.com
