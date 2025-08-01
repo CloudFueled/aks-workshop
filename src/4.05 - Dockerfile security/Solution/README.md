@@ -51,7 +51,6 @@ You're expected to identify **three** of the following types of flaws:
 * ❌ Unused build dependencies left in the final image
 * ❌ No version pinning for dependencies
 * ❌ Sensitive files copied unintentionally
-* ❌ Exposed ports not declared
 * ❌ No health check
 
 ---
@@ -72,15 +71,6 @@ Log them in comments for documentation.
 ---
 
 ### ⚙️ Phase II: Fix the Dockerfile
-
-Create a new Dockerfile that includes at least:
-
-* ✅ A minimal base image (e.g., `node:16-slim`)
-* ✅ A dedicated non-root user
-* ✅ A multi-stage build if needed (optional but preferred)
-* ✅ Clean layering and minimized COPY context
-
-Your final Dockerfile **must** still run the application as intended.
 
 ---
 

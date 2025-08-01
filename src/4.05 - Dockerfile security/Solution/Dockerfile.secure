@@ -3,22 +3,18 @@
 # ✅ Only copies necessary files for build
 # ✅ Uses clean layering for smaller image size
 
-FROM node:16-slim
+FROM node:24-alpine
 
-# Create app directory
 WORKDIR /app
 
-# Copy only package files first for layer caching
 COPY package*.json ./
 
-# Install only production dependencies
 RUN npm install --only=production
 
-# Copy application source
 COPY server.js .
 
-# Create non-root user and switch
-RUN useradd --user-group --create-home --shell /bin/false appuser \
+# ✅ Create non-root user the Alpine way
+RUN addgroup -S appuser && adduser -S -G appuser appuser \
   && chown -R appuser /app
 
 USER appuser
