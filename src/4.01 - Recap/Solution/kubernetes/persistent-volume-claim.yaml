@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: images-claim
+  namespace: bounty
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: bounty-azure-ssd
+  resources:
+    requests:
+      storage: 1Gi

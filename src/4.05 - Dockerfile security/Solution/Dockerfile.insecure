@@ -1,0 +1,13 @@
+# ❌ Using a full OS base image — increases attack surface and image size
+# ❌ Running as root by default — violates least privilege
+# ❌ Copies entire context — may include sensitive or unnecessary files
+
+FROM node:16
+
+WORKDIR /app
+
+COPY . .
+
+RUN npm install
+
+CMD ["node", "server.js"]

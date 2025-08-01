@@ -1,0 +1,9 @@
+apiVersion: v1
+data:
+  Migration__ApplyMigrations: "true"
+  Migration__RecreateDatabase: "false"
+  Migration__SeedDatabase: "true"
+kind: ConfigMap
+metadata:
+  name: cm-bounty-persistence
+  namespace: bounty
