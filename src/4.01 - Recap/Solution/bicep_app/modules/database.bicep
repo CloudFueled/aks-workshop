@@ -17,7 +17,7 @@ param administratorLoginPassword string
 
 @description('The SKU Tier for the Postgres DB.')
 @allowed([
- 	'Burstable'
+  'Burstable'
   'GeneralPurpose'
   'MemoryOptimized'
 ])
@@ -25,6 +25,8 @@ param skuTier string
 
 @description('The SKU Name for the Postgres DB.')
 param skuName string
+
+param tags object
 
 // MARK: Resources
 // MARK: PostgreSQL Flexible Server
@@ -42,11 +44,19 @@ resource db 'Microsoft.DBforPostgreSQL/flexibleServers@2025-01-01-preview' = {
     network: {
       publicNetworkAccess: 'Enabled'
     }
+    version: '15'
+    storage: {
+      storageSizeGB: 32
+      iops: 120
+      autoGrow: 'Enabled'
+      tier: 'P4'
+    }
   }
   sku: {
     name: skuName
     tier: skuTier
   }
+  tags: tags
 }
 
 // MARK: Outputs

@@ -29,7 +29,7 @@ param subject string
   'standard'
   'premium'
 ])
-param skuName string
+param keyVaultSkuName string
 
 @description('The Role Assignment Configuration for the Key Vault.')
 param roleAssignment object
@@ -91,7 +91,7 @@ module keyVault 'modules/keyVault.bicep' = {
   params: {
     location: location
     keyVaultName: keyVaultName
-    skuName: skuName
+    skuName: keyVaultSkuName
     roleAssignments: [
       roleAssignment
       {

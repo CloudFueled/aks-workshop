@@ -29,10 +29,10 @@ param subject = 'system:serviceaccount:external-secrets:sa-external-secrets'
 
 // MARK: Key Vault
 param keyVaultResourceGroupName = 'rg-deathstar-archive-midsector'
-param keyVaultName = 'kv-deathstar-mvh'
-param skuName = 'standard'
+param keyVaultName = 'kv-deathstar-unique01' // Change this to a unique name
+param keyVaultSkuName = 'standard'
 param roleAssignment = {
-  principalId: '3c38f345-972c-41c7-8b56-d345d6a5d10b' // Your Azure AD User Object ID
+  principalId: '2a17465b-d754-4033-bda9-2e3f0a918e72' // Your Azure AD User Object ID
   principalType: 'User'
   roleDefinitionId: '00482a5a-887f-4fb3-b363-3b7fe8e74483' // Key Vault Administrator
 }

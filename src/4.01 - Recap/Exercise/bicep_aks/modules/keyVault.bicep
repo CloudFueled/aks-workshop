@@ -33,6 +33,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2024-12-01-preview' = {
     }
     enableRbacAuthorization: true
     tenantId: subscription().tenantId
+    enabledForTemplateDeployment: true
   }
   tags: tags
 }
