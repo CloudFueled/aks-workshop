@@ -48,6 +48,7 @@ resource resourceGroupAks 'Microsoft.Resources/resourceGroups@2025-04-01' = {
 
 // MARK: AKS Cluster
 module aks 'modules/aks.bicep' = {
+  name: 'AKS-${clusterName}'
   scope: resourceGroupAks
   params: {
     clusterName: clusterName
@@ -87,6 +88,7 @@ module managedIdentity 'modules/managedIdentity.bicep' = {
 
 // MARK: Key Vault
 module keyVault 'modules/keyVault.bicep' = {
+  name: 'KV-${keyVaultName}'
   scope: resourceGroupKv
   params: {
     location: location
