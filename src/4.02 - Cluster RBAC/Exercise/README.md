@@ -2,9 +2,11 @@
 
 ### ⚔️ *Imperial Command Permissions*
 
-The Empire’s fleet expansion demands **strict control** over who can issue commands to each starship and battlestation. Not every officer is permitted to launch TIE fighters or scan hyperspace routes—only those with proper authorization.
+The Empire’s fleet expansion demands **strict control** over who can issue commands to each starship and battlestation.  
+Not every officer is permitted to launch TIE fighters or scan hyperspace routes—only those with proper authorization.
 
-As the newly appointed **Security Officer of the Imperial Fleet**, it is your duty to implement role-based access control (RBAC) using **ServiceAccounts**, **Roles**, and **Bindings**. This ensures that each squadron and command unit operates under the **principle of least privilege**.
+As the newly appointed **Security Officer of the Imperial Fleet**, it is your duty to implement role-based access control (RBAC) using **ServiceAccounts**, **Roles**, and **Bindings**.  
+This ensures that each squadron and command unit operates under the **principle of least privilege**.
 
 > *"Power flows through control. Without it, even the strongest starship is just a floating hunk of metal."*
 > — **Grand Admiral Thrawn**
@@ -20,6 +22,7 @@ Your objectives for this operation are to:
 3. Assign namespace-specific **read permissions on pods** using a Role and RoleBinding.
 4. Assign cluster-wide **read access to nodes** using a ClusterRole and ClusterRoleBinding.
 5. Simulate access checks using impersonation to validate permissions.
+6. Assign the service account to a pod and verify the access
 
 ---
 
@@ -102,7 +105,7 @@ Create a `ClusterRole` to allow read-only access to infrastructure details—spe
 
 Validate your permissions by impersonating the squadron commander’s ServiceAccount using the CLI:
 
-> 🔍 Run the following commands:
+🔍 Run the following commands:
 
 ```bash
 kubectl auth can-i list pods --namespace=imperial-squadron --as=system:serviceaccount:imperial-squadron:squadron-commander
@@ -116,7 +119,52 @@ kubectl auth can-i list nodes --as=system:serviceaccount:imperial-squadron:squad
 > ❌ List pods in `default`
 > ✅ List nodes cluster-wide
 
+
+Actual commands:
+```bash
+kubectl get pods --namespace=imperial-squadron --as=system:serviceaccount:imperial-squadron:squadron-commander
+kubectl get pods --namespace=default --as=system:serviceaccount:imperial-squadron:squadron-commander
+kubectl get nodes --as=system:serviceaccount:imperial-squadron:squadron-commander
+```
+
 ---
+
+### ⚙️ Phase V: Assign The Service Account To Pods
+
+Now, assign the `squadron-commander` ServiceAccount to a pod and test what API resources it can access from inside the pod. This helps you visualize the actual access rights granted by your RBAC configuration.
+
+
+**Step 1: Deploy a demo pod and assign it to the ServiceAccount**
+
+Do this with the following properties:
+**Name**: `rbac-demo-pod`
+**Namespace**: `imperial-squadron` 
+**Image**: `bitnami/kubectl:latest`
+**Command**: `["sleep", "3600"]`
+
+**Step 2: Connect inside the pod**
+
+After the pod has been created, access an interactive shell within the pod.  
+(Hint: execute via an interactive bash shell)
+
+**Step 3: Test access from inside the pod**
+
+Once inside the pod, run following kubectl commands to verify the permissions of the pod:
+
+```bash
+kubectl get pods -n imperial-squadron
+kubectl get pods -n default
+kubectl get nodes
+```
+
+**Expected Results:**
+
+- ✅ Able to list pods in `imperial-squadron`
+- ❌ Unable to list pods in `default`
+- ✅ Able to list nodes cluster-wide
+
+This demonstrates the real access rights of the pod using the assigned ServiceAccount.
+
 
 ## 📦 Deliverables
 
@@ -130,3 +178,4 @@ By the end of this mission, you should have the following resources defined:
 | RoleBinding        | `rb-squadron-commander`   | `imperial-squadron` |
 | ClusterRole        | `clusterrole-node-reader` | -                   |
 | ClusterRoleBinding | `crb-squadron-commander`  | -                   |
+| Pod                | `rbac-demo-pod`           | `imperial-squadron` |
