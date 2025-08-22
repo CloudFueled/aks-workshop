@@ -72,7 +72,7 @@ You will:
 - Provide values for all required parameters
 - Set `administratorLoginPassword` to a Key Vault reference:
   - Use the `keyVaultResourceGroupName` and `keyVaultName` parameters to reference an existing Key Vault
-  - Use the secret name `dbadmin-password` for the password
+  - Use the secret name `dbAdminPassword` for the password
   - Make sure to use the `@secure()` function to mark it as a secure string
   - And make sure you create the secret in the Azure Key Vault (created in step 1) before running the application IaC Bicep deployment
 - Use logical, unique names (e.g., `bounty-db`) where applicable
