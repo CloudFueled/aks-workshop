@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: bounty-client
+  name: bounty-client
+  namespace: bounty
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bounty-client
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: bounty-client
+    spec:
+      containers:
+        - image: cloudfuelimages.azurecr.io/bountyclient:1.1.0-official
+          name: bountyclient
+          imagePullPolicy: Always
+          resources:
+            requests:
+              cpu: "0.5"
+              memory: "256Mi"
+            limits:
+              cpu: "0.75"
+              memory: "512Mi"
+          envFrom:
+            - configMapRef:
+                name: cm-bounty-client
+          ports:
+            - containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          volumeMounts:
+            - name: images
+              mountPath: /app/wwwroot/uploads
+      volumes:
+        - name: images
+          persistentVolumeClaim:
+            claimName: images-claim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: bounty-client
+  name: svc-bounty-client
+  namespace: bounty
+spec:
+  ports:
+    - port: 8080
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: bounty-client

@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: bounty-api
+  name: bounty-api
+  namespace: bounty
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bounty-api
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: bounty-api
+    spec:
+      initContainers:
+        - image: cloudfuelimages.azurecr.io/bountypersistence:latest
+          name: bountypersistence
+          env:
+            - name: ConnectionStrings__Database
+              valueFrom:
+                secretKeyRef:
+                  name: secret-bounty-db-connectionstring
+                  key: connectionstring
+          envFrom:
+            - configMapRef:
+                name: cm-bounty-persistence
+      containers:
+        - image: cloudfuelimages.azurecr.io/bountyapi:latest
+          name: bountyapi
+          env:
+            - name: ConnectionStrings__Database
+              valueFrom:
+                secretKeyRef:
+                  name: secret-bounty-db-connectionstring
+                  key: connectionstring
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              cpu: "0.5"
+              memory: "256Mi"
+            limits:
+              cpu: "0.75"
+              memory: "512Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: bounty-api
+  name: svc-bounty-api
+  namespace: bounty
+spec:
+  ports:
+    - port: 5000
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: bounty-api

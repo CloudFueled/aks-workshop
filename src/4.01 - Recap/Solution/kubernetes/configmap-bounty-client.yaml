@@ -1,0 +1,7 @@
+apiVersion: v1
+data:
+  Apis__BountyApiUrl: "http://svc-bounty-api:5000"
+kind: ConfigMap
+metadata:
+  name: cm-bounty-client
+  namespace: bounty
