@@ -43,6 +43,7 @@ resource resourceGroupDb 'Microsoft.Resources/resourceGroups@2025-04-01' = {
 
 // MARK: PostgreSQL Flexible Server Module
 module database 'modules/database.bicep' = {
+  name: databaseName
   scope: resourceGroupDb
   params: {
     location: location
