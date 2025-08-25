@@ -1,0 +1,33 @@
+tempo:
+  metricsGenerator:
+    enabled: true
+    remoteWriteUrl: http://kube-prometheus-stack-prometheus.observability.svc.cluster.local:9090/api/v1/write
+
+  storage:
+    trace:
+      backend: local
+      local:
+        path: /var/tempo/traces
+      wal:
+        path: /var/tempo/wal
+
+  structuredConfig:
+    stream_over_http_enabled: true # Enables trace streaming
+
+traces:
+  otlp:
+    grpc:
+      enabled: true
+
+gateway:
+  enabled: true
+  replicas: 1
+  basicAuth:
+    enabled: true
+    existingSecret: tempo-credentials
+
+persistence:
+  enabled: true
+  accessModes:
+    - ReadWriteOnce
+  size: 10Gi

@@ -1,0 +1,150 @@
+alloy:
+  clustering:
+    enabled: true
+    stabilityLevel: "generally-available"
+    enableReporting: false
+  resources:
+    requests:
+      cpu: 50m
+      memory: 400Mi
+  configReloader:
+    enabled: true
+  controller:
+    type: "daemonset"
+    priorityClassName: "system-node-critical"
+  extraPorts:
+    - name: otlp-grpc
+      port: 4317
+      targetPort: 4317
+      containerPort: 4317
+      protocol: TCP
+    - name: otlp-http
+      port: 4318
+      targetPort: 4318
+      containerPort: 4318
+      protocol: TCP
+  envFrom:
+    - secretRef:
+        name: alloy-loki-credentials
+    - secretRef:
+        name: alloy-tempo-credentials
+  configMap:
+    content: |-
+      logging {
+        level = "debug"
+        format = "logfmt"
+      }
+      discovery.kubernetes "pods" {
+        role = "pod"
+      }
+      discovery.relabel "pods" {
+        targets = discovery.kubernetes.pods.targets            
+
+        rule {
+          source_labels = ["__meta_kubernetes_namespace"]
+          target_label  = "namespace"
+        }
+        rule {
+          source_labels = ["__meta_kubernetes_pod_label_app_kubernetes_io_name"]
+          target_label  = "stream"
+        }
+        rule {
+          source_labels = ["__meta_kubernetes_pod_container_name"]
+          target_label  = "container"
+        }
+        rule {
+          source_labels = ["__meta_kubernetes_pod_name"]
+          target_label  = "pod"
+        }
+      }      
+      prometheus.remote_write "default" {
+        endpoint {
+            url = "http://kube-prometheus-stack-prometheus.observability.svc.cluster.local:9090/api/v1/write"
+        }
+      }
+      loki.source.kubernetes "pods" {
+        targets    = discovery.relabel.pods.output
+        forward_to = [loki.process.process.receiver]
+      }
+      loki.process "process" {
+        forward_to = [loki.write.loki.receiver]
+        
+        stage.drop {
+          older_than          = "48h"
+          drop_counter_reason = "too old"
+        }
+
+        stage.match { 
+          selector = "{instance=~\".*\"}"
+          stage.json {
+            expressions = {
+              level = "\"level\"",
+            }
+          }
+          stage.labels {
+            values = { 
+              level = "level",
+            }
+          }
+        }
+        stage.label_drop {
+          values = [ "job", "service_name" ]
+        }
+      }
+      loki.write "loki" {
+        endpoint {
+          url = "http://grafana-loki-gateway.observability.svc.cluster.local/loki/api/v1/push"
+          basic_auth {
+            username = sys.env("loki-username")
+            password = sys.env("loki-password")
+          }
+          headers = {
+            "X-Scope-OrgID" = "xerius",
+          }          
+        }        
+      }
+
+      otelcol.receiver.otlp "default" {
+        http {
+          endpoint = "0.0.0.0:4318"
+        }
+        grpc {
+          endpoint = "0.0.0.0:4317"
+        }
+        output {
+          traces  = [otelcol.exporter.otlp.tempo.input]
+          metrics = [otelcol.exporter.prometheus.default.input]
+          logs = [otelcol.exporter.loki.loggingloki.input]
+        }
+      }
+
+      otelcol.processor.batch "default" {
+        send_batch_max_size	 = 5
+        send_batch_size = 1
+        output {              
+          traces  = [otelcol.exporter.otlp.tempo.input]
+        }
+      }
+
+      otelcol.exporter.prometheus "default" {
+        forward_to = [prometheus.remote_write.default.receiver]
+      }
+
+      otelcol.exporter.loki "loggingloki" {
+        forward_to = [loki.write.loki.receiver]
+      }
+
+      otelcol.exporter.otlp "tempo" {
+        client {
+          endpoint = "http://grafana-tempo-distributor.observability.svc.cluster.local:4317"
+
+          tls {
+            insecure = true
+          }
+        }
+      }
+
+      otelcol.auth.basic "tempo" {
+        username = sys.env("tempo-username")
+        password = sys.env("tempo-password")
+      }

@@ -1,0 +1,225 @@
+# Values based on https://github.com/grafana/mimir/blob/main/operations/helm/charts/mimir-distributed/small.yaml
+metaMonitoring:
+  serviceMonitor:
+    enabled: true
+    labels:
+      release: kube-prometheus-stack
+mimir:
+  structuredConfig:
+    common:
+      storage:
+        backend: filesystem
+
+    alertmanager_storage:
+      azure:
+        container_name: mimir-alert
+
+    blocks_storage:
+      backend: filesystem
+      bucket_store:
+        sync_dir: /data/tsdb-sync
+
+      tsdb:
+        dir: /data/tsdb
+    compactor:
+      data_dir: /data
+    frontend:
+      log_queries_longer_than: 10s
+    ingester:
+      instance_limits:
+        max_ingestion_rate: 0
+      ring:
+        final_sleep: 0s
+        num_tokens: 512
+    ingester_client:
+      grpc_client_config:
+        max_recv_msg_size: 104857600
+        max_send_msg_size: 104857600
+    limits:
+      ingestion_rate: 40000
+      compactor_blocks_retention_period: 2d
+      max_global_series_per_metric: 0
+      max_global_series_per_user: 0
+      compactor_block_upload_enabled: true
+    memberlist:
+      abort_if_cluster_join_fails: false
+      compression_enabled: false
+    ruler:
+      alertmanager_url:
+        dnssrvnoa+http://_http-metrics._tcp.{{ template "mimir.fullname"
+        . }}-alertmanager-headless.{{ .Release.Namespace }}.svc.{{ .Values.global.clusterDomain
+        }}/alertmanager
+      enable_api: true
+      rule_path: /data
+    ruler_storage:
+      backend: filesystem
+    runtime_config:
+      file: /var/{{ include "mimir.name" . }}/runtime.yaml
+    server:
+      grpc_server_max_concurrent_streams: 1000
+      grpc_server_max_recv_msg_size: 104857600
+      grpc_server_max_send_msg_size: 104857600
+    usage_stats:
+      enabled: false
+
+compactor:
+  persistentVolume:
+    size: 50Gi
+  resources:
+    limits:
+      memory: 2.1Gi
+    requests:
+      cpu: 100m
+      memory: 1Gi
+
+distributor:
+  replicas: 2
+  resources:
+    limits:
+      memory: 5.7Gi
+    requests:
+      cpu: 300m # 2
+      memory: 1Gi #4Gi
+
+ingester:
+  persistentVolume:
+    size: 50Gi
+  replicas: 3
+  resources:
+    limits:
+      memory: 12Gi
+    requests:
+      cpu: 200m # 3.5
+      memory: 2Gi # 8Gi
+  topologySpreadConstraints: {}
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+              - key: target # support for enterprise.legacyLabels
+                operator: In
+                values:
+                  - ingester
+          topologyKey: "kubernetes.io/hostname"
+        - labelSelector:
+            matchExpressions:
+              - key: app.kubernetes.io/component
+                operator: In
+                values:
+                  - ingester
+          topologyKey: "kubernetes.io/hostname"
+
+admin-cache:
+  enabled: true
+  replicas: 3
+
+chunks-cache:
+  enabled: true
+  replicas: 3
+
+index-cache:
+  enabled: true
+  replicas: 3
+
+metadata-cache:
+  enabled: true
+  replicas: 3
+
+results-cache:
+  enabled: true
+  replicas: 3
+
+store_gateway:
+  persistentVolume:
+    size: 10Gi
+  replicas: 3
+  resources:
+    limits:
+      memory: 2.1Gi
+    requests:
+      cpu: 100m
+      memory: 1.5Gi
+  topologySpreadConstraints: {}
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+              - key: target # support for enterprise.legacyLabels
+                operator: In
+                values:
+                  - store-gateway
+          topologyKey: "kubernetes.io/hostname"
+
+        - labelSelector:
+            matchExpressions:
+              - key: app.kubernetes.io/component
+                operator: In
+                values:
+                  - store-gateway
+          topologyKey: "kubernetes.io/hostname"
+  zoneAwareReplication:
+    topologyKey: "kubernetes.io/hostname"
+
+overrides_exporter:
+  replicas: 1
+  resources:
+    limits:
+      memory: 128Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
+querier:
+  replicas: 1
+  resources:
+    limits:
+      memory: 5.6Gi
+    requests:
+      cpu: 100m
+      memory: 1Gi
+
+query_frontend:
+  replicas: 1
+  resources:
+    limits:
+      memory: 2.8Gi
+    requests:
+      cpu: 100m
+      memory: 1Gi
+
+ruler:
+  replicas: 1
+  resources:
+    limits:
+      memory: 2.8Gi
+    requests:
+      cpu: 100m
+      memory: 2Gi
+
+gateway:
+  enabled: true
+  enabledNonEnterprise: true
+  replicas: 1
+  resources:
+    limits:
+      memory: 731Mi
+    requests:
+      cpu: 1
+      memory: 512Mi
+  extraEnvFrom:
+    - secretRef:
+        name: mimir-credentials
+  service:
+    type: ClusterIP
+    port: 80
+  nginx:
+    basicAuth:
+      enabled: true
+      username: ${mimir-username}
+      password: ${mimir-password}
+      existingSecret: mimir-credentials
+
+minio:
+  enabled: false

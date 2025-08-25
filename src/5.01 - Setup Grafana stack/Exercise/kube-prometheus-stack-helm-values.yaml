@@ -1,0 +1,208 @@
+defaultRules:
+  create: true
+  rules:
+    alertmanager: true
+    etcd: true
+    configReloaders: true
+    general: true
+    k8sContainerCpuUsageSecondsTotal: true
+    k8sContainerMemoryCache: true
+    k8sContainerMemoryRss: true
+    k8sContainerMemorySwap: true
+    k8sContainerResource: true
+    k8sContainerMemoryWorkingSetBytes: true
+    k8sPodOwner: true
+    kubeApiserverAvailability: true
+    kubeApiserverBurnrate: true
+    kubeApiserverHistogram: true
+    kubeApiserverSlos: true
+    kubeControllerManager: false
+    kubelet: true
+    kubeProxy: false
+    kubePrometheusGeneral: true
+    kubePrometheusNodeRecording: true
+    kubernetesApps: true
+    kubernetesResources: true
+    kubernetesStorage: true
+    kubernetesSystem: true
+    kubeSchedulerAlerting: false
+    kubeSchedulerRecording: false
+    kubeStateMetrics: true
+    network: true
+    node: true
+    nodeExporterAlerting: true
+    nodeExporterRecording: true
+    prometheus: true
+    prometheusOperator: true
+    windows: false
+
+grafana:
+  enabled: true
+
+  plugins:
+    - grafana-exploretraces-app
+
+  deploymentStrategy:
+    type: Recreate
+
+  resources:
+    limits:
+      cpu: 200m
+      memory: 1Gi
+    requests:
+      cpu: 50m
+      memory: 512Mi
+
+  useStatefulSet: true
+
+  persistence:
+    enabled: true
+    type: pvc
+    storageClassName: default
+    size: 10Gi
+    accessModes:
+      - ReadWriteOnce
+    finalizers:
+      - kubernetes.io/pvc-protection
+
+  sidecar:
+    datasources:
+      isDefaultDatasource: false
+
+  grafana.ini:
+    analytics:
+      check_for_updates: true
+    log:
+      mode: console
+    paths:
+      data: /var/lib/grafana/
+      logs: /var/log/grafana
+      plugins: /var/lib/grafana/plugins
+      provisioning: /etc/grafana/provisioning
+    server:
+      root_url: https://demo-grafana.xeriusgroup.be
+      domain: xeriusgroup.be
+
+  defaultDashboardsTimezone: Europe/Brussels
+
+prometheus:
+  prometheusSpec:
+    priorityClassName: system-cluster-critical
+
+    # Allow Prometheus to discover service monitors by default
+    serviceMonitorSelectorNilUsesHelmValues: false
+    serviceMonitorSelector: {}
+    serviceMonitorNamespaceSelector: {}
+
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: default
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 50Gi
+
+    resources:
+      requests:
+        memory: 1Gi
+
+    enableRemoteWriteReceiver: true
+
+    remoteWrite:
+      - url: http://grafana-mimir-nginx.observability.svc.cluster.local:80/api/v1/push
+        headers:
+          X-Scope-OrgID: xerius
+        basicAuth:
+          username:
+            name: mimir-credentials
+            key: mimir-username
+          password:
+            name: mimir-credentials
+            key: mimir-password
+
+    persistentVolumeClaimRetentionPolicy:
+      whenDeleted: Retain
+      whenScaled: Retain
+
+    additionalScrapeConfigs:
+      - job_name: networkobservability-hubble
+        kubernetes_sd_configs:
+          - role: pod
+        relabel_configs:
+          - target_label: cluster
+            replacement: aks-dta-we-shared-services
+            action: replace
+          - source_labels:
+              [__meta_kubernetes_namespace, __meta_kubernetes_pod_label_k8s_app]
+            regex: kube-system;(retina|cilium)
+            action: keep
+          - source_labels: [__address__]
+            action: replace
+            regex: ([^:]+)(?::\d+)?
+            replacement: $1:9965
+            target_label: __address__
+          - source_labels: [__meta_kubernetes_pod_node_name]
+            target_label: instance
+            action: replace
+        metric_relabel_configs:
+          - source_labels: [__name__]
+            regex: "|hubble_dns_queries_total|hubble_dns_responses_total|hubble_drop_total|hubble_policy_verdicts_total|hubble_tcp_flags_total|hubble_flows_processed_total"
+            action: keep
+
+alertmanager:
+  enabled: true
+
+  alertmanagerSpec:
+    priorityClassName: system-cluster-critical
+    replicas: 3
+
+  podDisruptionBudget:
+    enabled: true
+    minAvailable: 1
+    maxUnavailable: ""
+
+  config:
+    global:
+      resolve_timeout: 5m
+    inhibit_rules:
+      - source_matchers:
+          - "severity = critical"
+        target_matchers:
+          - "severity =~ warning|info"
+        equal:
+          - "namespace"
+          - "alertname"
+      - source_matchers:
+          - "severity = warning"
+        target_matchers:
+          - "severity = info"
+        equal:
+          - "namespace"
+          - "alertname"
+      - source_matchers:
+          - "alertname = InfoInhibitor"
+        target_matchers:
+          - "severity = info"
+        equal:
+          - "namespace"
+      - target_matchers:
+          - "alertname = InfoInhibitor"
+    route:
+      group_by: ["namespace"]
+      group_wait: 30s
+      group_interval: 5m
+      repeat_interval: 12h
+      receiver: "null"
+
+    receivers:
+      - name: "null"
+
+kubeControllerManager:
+  enabled: false
+
+kubeProxy:
+  enabled: false
+
+kubeScheduler:
+  enabled: false
